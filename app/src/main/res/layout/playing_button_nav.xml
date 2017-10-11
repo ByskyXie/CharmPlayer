@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_gravity="bottom"
+    android:background="@drawable/layout_for_playing_nav"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ProgressBar
+        android:clickable="false"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:gravity="end"
+        android:padding="@dimen/mini_border"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_weight="5"
+            android:layout_width="0dp"
+            android:orientation="vertical"
+            android:layout_height="@dimen/icon_size_normal">
+
+            <TextView
+                android:gravity="left"
+                android:textSize="24dp"
+                android:textColor="@color/darkPrimaryColor_red"
+                android:text="@string/default_music_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:textColor="@color/PrimaryColor_red"
+                android:text="@string/default_music_lrc"
+                android:textSize="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <ImageButton
+            android:layout_margin="@dimen/mini_border"
+            android:background="@drawable/ic_pre_music"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="@dimen/icon_size_normal" />
+        <ImageButton
+            android:layout_margin="@dimen/mini_border"
+            android:background="@drawable/ic_play"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="@dimen/icon_size_normal" />
+        <ImageButton
+            android:layout_margin="@dimen/mini_border"
+            android:background="@drawable/ic_next_music"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="@dimen/icon_size_normal" />
+    </LinearLayout>
+</LinearLayout>
