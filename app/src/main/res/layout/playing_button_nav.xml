@@ -7,6 +7,8 @@
     android:layout_height="wrap_content">
 
     <ProgressBar
+        android:paddingLeft="@dimen/mini_border"
+        android:paddingRight="@dimen/mini_border"
         android:clickable="false"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
@@ -14,7 +16,8 @@
 
     <LinearLayout
         android:gravity="end"
-        android:padding="@dimen/mini_border"
+        android:paddingLeft="@dimen/mini_border"
+        android:paddingRight="@dimen/mini_border"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
@@ -25,7 +28,7 @@
 
             <TextView
                 android:gravity="left"
-                android:textSize="24dp"
+                android:textSize="20sp"
                 android:textColor="@color/darkPrimaryColor_red"
                 android:text="@string/default_music_title"
                 android:layout_width="wrap_content"
@@ -33,28 +36,28 @@
             <TextView
                 android:textColor="@color/PrimaryColor_red"
                 android:text="@string/default_music_lrc"
-                android:textSize="16dp"
+                android:textSize="14sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <ImageButton
+        <Button
             android:layout_margin="@dimen/mini_border"
             android:background="@drawable/ic_pre_music"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="@dimen/icon_size_normal" />
-        <ImageButton
+            android:layout_weight="0"
+            android:layout_width="@dimen/icon_size_small"
+            android:layout_height="@dimen/icon_size_small" />
+        <Button
             android:layout_margin="@dimen/mini_border"
             android:background="@drawable/ic_play"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_width="48dp"
+            android:layout_weight="0"
             android:layout_height="@dimen/icon_size_normal" />
-        <ImageButton
+        <Button
             android:layout_margin="@dimen/mini_border"
             android:background="@drawable/ic_next_music"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="@dimen/icon_size_normal" />
+            android:layout_weight="0"
+            android:layout_width="@dimen/icon_size_small"
+            android:layout_height="@dimen/icon_size_small" />
     </LinearLayout>
 </LinearLayout>

@@ -4,8 +4,8 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <!--new-->
-    <color name="darkPrimaryColor_red">#D32F2F</color>
-    <color name="PrimaryColor_red">#F44336</color>
+    <color name="darkPrimaryColor_red">#c62828</color>
+    <color name="PrimaryColor_red">#D32F2F</color>
     <color name="lightPrimaryColor_red">#FFCDD2</color>
     <color name="text_red">#FFFFFF</color>
     <color name="accentColor_red">#FF5722</color>

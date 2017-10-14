@@ -9,4 +9,7 @@
     <dimen name="mini_border">4dp</dimen>
     <!-- 用于约束播放等按钮的大小 -->
     <dimen name="icon_size_normal">48dp</dimen>
+    <dimen name="icon_size_small">32dp</dimen>
+    <dimen name="icon_size_big">64dp</dimen>
+    <dimen name="icon_size_large">128dp</dimen>
 </resources>
