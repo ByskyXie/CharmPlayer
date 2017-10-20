@@ -7,9 +7,16 @@
     <dimen name="fab_margin">16dp</dimen>
     <!--DIY-->
     <dimen name="mini_border">4dp</dimen>
+    <dimen name="mid_border">8dp</dimen>
+    <dimen name="big_border">16dp</dimen>
+    <dimen name="large_border">32dp</dimen>
+    <dimen name="vast_border">64dp</dimen>
     <!-- 用于约束播放等按钮的大小 -->
     <dimen name="icon_size_normal">48dp</dimen>
     <dimen name="icon_size_small">32dp</dimen>
     <dimen name="icon_size_big">64dp</dimen>
     <dimen name="icon_size_large">128dp</dimen>
+    <!-- 透明度 -->
+    <item name="view_alpha_mid" type="dimen" format="integer">143</item>
+    <item name="view_alpha_vague" type="dimen" format="integer">175</item>
 </resources>

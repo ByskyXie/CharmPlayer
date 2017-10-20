@@ -1,5 +1,6 @@
 package com.github.bysky.charmplayer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,9 +13,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity
+        implements NavigationView.OnNavigationItemSelectedListener,View.OnClickListener {
+
+    private Button button_localMusic,button_scan,button_fond,button_musicList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +27,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
+        //使当前活动作为返回活动
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -31,6 +38,33 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        button_localMusic = (Button) findViewById(R.id.button_entrance_local_music);    button_localMusic.setOnClickListener(this);
+        button_musicList = (Button)findViewById(R.id.button_entrance_music_list);       button_musicList.setOnClickListener(this);
+        button_scan = (Button)findViewById(R.id.button_entrance_scan);                  button_scan.setOnClickListener(this);
+        button_fond = (Button)findViewById(R.id.button_entrance_i_fond);                button_fond.setOnClickListener(this);
+        //Toast.makeText(this,"create",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onClick(View v) {
+        Intent intent;
+        switch(v.getId()){
+            case R.id.button_entrance_local_music:
+                intent = new Intent(this,LocalMusicActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.button_entrance_music_list:
+
+                break;
+            case R.id.button_entrance_i_fond:
+
+                break;
+            case R.id.button_entrance_scan:
+                intent = new Intent(this,ScanMusicActivity.class);
+                startActivity(intent);
+                break;
+        }
     }
 
     @Override

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:clickable="true"
     android:layout_gravity="bottom"
     android:background="@drawable/layout_for_playing_nav"
     android:layout_width="match_parent"
@@ -27,6 +28,7 @@
             android:layout_height="@dimen/icon_size_normal">
 
             <TextView
+                android:id="@+id/text_view_music_name"
                 android:gravity="left"
                 android:textSize="20sp"
                 android:textColor="@color/darkPrimaryColor_red"
@@ -34,6 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
+                android:id="@+id/text_view_music_lrc"
                 android:textColor="@color/PrimaryColor_red"
                 android:text="@string/default_music_lrc"
                 android:textSize="14sp"
@@ -42,18 +45,21 @@
         </LinearLayout>
 
         <Button
+            android:id="@+id/button_control_back"
             android:layout_margin="@dimen/mini_border"
             android:background="@drawable/ic_pre_music"
             android:layout_weight="0"
             android:layout_width="@dimen/icon_size_small"
             android:layout_height="@dimen/icon_size_small" />
         <Button
+            android:id="@+id/button_control_play"
             android:layout_margin="@dimen/mini_border"
             android:background="@drawable/ic_play"
             android:layout_width="48dp"
             android:layout_weight="0"
             android:layout_height="@dimen/icon_size_normal" />
         <Button
+            android:id="@+id/button_control_next"
             android:layout_margin="@dimen/mini_border"
             android:background="@drawable/ic_next_music"
             android:layout_weight="0"

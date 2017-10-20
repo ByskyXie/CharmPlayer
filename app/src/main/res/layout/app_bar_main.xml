@@ -12,7 +12,6 @@
         android:theme="@style/RedTheme">
 
         <android.support.v7.widget.Toolbar
-            android:title="标题"
             android:id="@+id/toolbar_main"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"

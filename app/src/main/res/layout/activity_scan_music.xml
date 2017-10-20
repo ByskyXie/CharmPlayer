@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.github.bysky.charmplayer.ScanMusicActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_scan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/RedTheme">
+
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_marginTop="@dimen/vast_border"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/ic_scan_big"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:paddingTop="@dimen/big_border"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:padding="@dimen/big_border"
+                android:drawableTop="@drawable/ic_all_select"
+                android:background="@drawable/layout_for_button"
+                android:text="@string/scan_mode_full"
+                android:layout_margin="@dimen/mini_border"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:padding="@dimen/big_border"
+                android:drawableTop="@drawable/ic_diy"
+                android:text="@string/scan_mode_diy"
+                android:background="@drawable/layout_for_button"
+                android:layout_margin="@dimen/mini_border"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

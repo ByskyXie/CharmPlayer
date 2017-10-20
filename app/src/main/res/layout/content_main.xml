@@ -9,14 +9,56 @@
     tools:context="com.github.bysky.charmplayer.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Welcome to charmPlayer"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:padding="@dimen/big_border"
+                android:id="@+id/button_entrance_local_music"
+                android:background="@drawable/layout_for_button"
+                android:drawableTop="@drawable/ic_local"
+                android:text="@string/local_music"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+            <Button
+                android:padding="@dimen/big_border"
+                android:id="@+id/button_entrance_scan"
+                android:background="@drawable/layout_for_button"
+                android:drawableTop="@drawable/ic_scan"
+                android:layout_weight="1"
+                android:text="@string/scan_music"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:padding="@dimen/big_border"
+                android:id="@+id/button_entrance_music_list"
+                android:background="@drawable/layout_for_button"
+                android:drawableTop="@drawable/ic_music_list"
+                android:layout_weight="1"
+                android:text="@string/music_list"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+            <Button
+                android:padding="@dimen/big_border"
+                android:id="@+id/button_entrance_i_fond"
+                android:background="@drawable/layout_for_button"
+                android:drawableTop="@drawable/ic_fond"
+                android:layout_weight="1"
+                android:text="@string/music_fond"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_weight="1"
@@ -26,6 +68,13 @@
         <include
             layout="@layout/playing_button_nav"/>
     </LinearLayout>
-
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="Welcome to charmPlayer"-->
+    <!--app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--app:layout_constraintLeft_toLeftOf="parent"-->
+    <!--app:layout_constraintRight_toRightOf="parent"-->
+    <!--app:layout_constraintTop_toTopOf="parent" />-->
 
 </LinearLayout>

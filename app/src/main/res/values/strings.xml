@@ -8,4 +8,13 @@
     <string name="action_settings">Settings</string>
     <string name="default_music_title">魅听，听见好音乐</string>
     <string name="default_music_lrc">在这里倾听世界的声音</string>
+
+    <string name="local_music">本地音乐</string>
+    <string name="scan_music">扫描歌曲</string>
+    <string name="music_list">歌单</string>
+    <string name="music_fond">我喜欢</string>
+
+    <string name="scan_title">扫描歌曲</string>
+    <string name="scan_mode_full">完全扫描</string>
+    <string name="scan_mode_diy">自定义扫描</string>
 </resources>
