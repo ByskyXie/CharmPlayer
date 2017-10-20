@@ -9,9 +9,10 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/RedTheme">
+        android:theme="@style/RedThemeOverlay_toolbar">
 
         <android.support.v7.widget.Toolbar
+            app:popupTheme="@style/RedPopupOverlay"
             android:id="@+id/toolbar_main"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"

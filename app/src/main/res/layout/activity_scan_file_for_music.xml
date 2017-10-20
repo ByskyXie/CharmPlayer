@@ -2,16 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.github.bysky.charmplayer.ScanMusicActivity">
-
+    android:orientation="vertical"
+    tools:context="com.github.bysky.charmplayer.ScanFileForMusicActivity">
     <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_width="368dp"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="8dp">
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_scan"
+            android:id="@+id/toolbar_scan_file"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/RedPopupOverlay">
@@ -20,41 +21,26 @@
     </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
-        android:gravity="center_horizontal"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <ImageView
             android:layout_marginTop="@dimen/vast_border"
+            android:layout_gravity="center_horizontal"
             android:background="@drawable/ic_scan_big"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-        <Button
-            android:id="@+id/button_scan_all"
-            android:textColor="@color/white"
-            android:background="@drawable/layout_for_button_dark"
-            android:textSize="21sp"
-            android:drawableTint="@color/white"
-            android:layout_marginTop="@dimen/large_border"
-            android:paddingLeft="@dimen/big_border"
-            android:drawableLeft="@drawable/ic_all_select"
-            android:text="@string/scan_mode_full"
-            android:layout_width="256dp"
-            android:layout_height="wrap_content" />
 
         <Button
-            android:id="@+id/button_scan_diy"
+            android:id="@+id/button_scan_cancel"
             android:textColor="@color/white"
-            android:background="@drawable/layout_for_button_dark"
             android:textSize="21sp"
-            android:drawableTint="@color/white"
-            android:paddingLeft="@dimen/big_border"
-            android:drawableLeft="@drawable/ic_diy"
-            android:text="@string/scan_mode_diy"
-            android:layout_margin="@dimen/mini_border"
+            android:layout_marginTop="@dimen/vast_border"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/layout_for_button_dark"
+            android:text="@string/stop"
             android:layout_width="256dp"
             android:layout_height="wrap_content" />
 
     </LinearLayout>
-
 </LinearLayout>

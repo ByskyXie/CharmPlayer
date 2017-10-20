@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="1024dp"
+    android:height="1024dp"
+    android:viewportWidth="1024"
+    android:viewportHeight="1024">
+
+    <path
+        android:fillColor="#707070"
+        android:pathData="M512 976C282.624 976 96 789.392 96 560 96 330.624 282.624 144 512 144c229.392 0
+416 186.624 416 416C928 789.392 741.392 976 512 976zM512 208c-194.096 0-352
+157.904-352 352s157.904 352 352 352 352-157.904 352-352S706.096 208 512 208z" />
+    <path
+        android:fillColor="#707070"
+        android:pathData="M640.992 80 367.664 80c-13.264 0-24-10.736-24-24s10.736-24 24-24l273.312
+0c13.248 0 24 10.736 24 24S654.24 80 640.992 80z" />
+    <path
+        android:fillColor="#707070"
+        android:pathData="M800 315.248c-6.144 0-12.288-2.336-16.976-7.024-9.376-9.36-9.376-24.576
+0-33.936l51.248-51.248c9.376-9.376 24.56-9.376 33.936 0 9.376 9.36 9.376 24.576
+0 33.936l-51.248 51.248C812.288 312.912 806.144 315.248 800 315.248z" />
+    <path
+        android:fillColor="#707070"
+        android:pathData="M528 579.904c-6.144 0-12.288-2.336-16.976-7.024-9.376-9.376-9.376-24.56
+0-33.936l187.904-187.904c9.376-9.376 24.56-9.376 33.936 0 9.376 9.36 9.376
+24.576 0 33.936L544.976 572.88C540.288 577.568 534.144 579.904 528 579.904z" />
+    <path
+        android:fillColor="#707070"
+        android:pathData="M504.336 173.408c-13.264 0-24-10.736-24-24L480.336 78.976c0-13.264 10.736-24
+24-24s24 10.736 24 24l0 70.432C528.336 162.672 517.584 173.408 504.336 173.408z" />
+    <path
+        android:fillColor="#707070"
+        android:pathData="M512 848m-32 0a2 2 0 1 0 64 0 2 2 0 1 0-64 0Z" />
+    <path
+        android:fillColor="#707070"
+        android:pathData="M512 265.632m-32 0a2 2 0 1 0 64 0 2 2 0 1 0-64 0Z" />
+    <path
+        android:fillColor="#707070"
+        android:pathData="M222 560m-32 0a2 2 0 1 0 64 0 2 2 0 1 0-64 0Z" />
+    <path
+        android:fillColor="#707070"
+        android:pathData="M808 560m-32 0a2 2 0 1 0 64 0 2 2 0 1 0-64 0Z" />
+</vector>

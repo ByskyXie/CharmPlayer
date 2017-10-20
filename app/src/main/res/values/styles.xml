@@ -15,7 +15,6 @@
 
     <!--<style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />-->
 
-    <!--<style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />-->
 
     <style name="AppBarLayout_red" parent="Widget.Design.AppBarLayout">
 
@@ -28,6 +27,14 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="RedPopupOverlay" parent="@style/RedThemeOverlay_toolbar">
+        <item name="android:colorBackground">@color/PrimaryColor_red</item>
+    </style>
+
+    <style name="RedThemeOverlay_toolbar" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:textColorPrimary">@color/white</item>
+
+    </style>
 
     <!-- ProgressBar  -->
 </resources>
