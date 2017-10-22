@@ -20,28 +20,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".LocalMusicActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-
         <activity android:name=".ScanMusicActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-
-        <activity android:name=".ScanFileForMusicActivity" >
+        <activity android:name=".ScanFileForMusicActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ScanMusicActivity" />
         </activity>
+        <activity android:name=".SelectFolderActivity"></activity>
 
-        <activity android:name=".SelectFolderActivity">
-
-        </activity>
+        <service
+            android:name=".ScanFileService"
+            android:enabled="true"
+            android:exported="false"></service>
     </application>
 
 </manifest>

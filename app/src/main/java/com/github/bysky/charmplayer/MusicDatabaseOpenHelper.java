@@ -10,10 +10,12 @@ import android.util.Log;
  */
 
 public class MusicDatabaseOpenHelper extends SQLiteOpenHelper {
-    private static final String CREATE_DB_COMMAND = "CREATE TABLE MUSIC_PATH(" +
-            "FILE_PATH text," +
-            "MUSIC_NAME text," +
-            "PRIMARY KEY(FILE_PATH,MUSIC_NAME)" +
+    private static final String CREATE_DB_COMMAND = "CREATE TABLE MUSIC(" +
+            "FILE_PATH TEXT PRIMARY KEY," +
+            "FILE_NAME TEXT NOT NULL," +
+            "FILE_FOLDER TEXT NOT NULL," +
+            "MUSIC_NAME TEXT," +
+            "ARTIST TEXT"+
             ");";
 
     private Context context;

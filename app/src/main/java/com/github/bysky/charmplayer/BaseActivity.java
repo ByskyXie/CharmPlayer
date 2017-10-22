@@ -4,7 +4,6 @@ package com.github.bysky.charmplayer;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -32,9 +31,8 @@ public class BaseActivity extends AppCompatActivity {
         checkMusicFile();
     }
     private void checkMusicFile(){
-        //TODO:可能出现大问题
-        //需要用户允许读取内置存储空间权限
-        Cursor all_music = musicSQLiteDatabases.query("MUSIC_PATH",new String[]{"FILE_PATH","MUSIC_NAME"},null,null,null,null,null);
+        //TODO:可能因无权限而闪退
+        Cursor all_music = musicSQLiteDatabases.query("MUSIC",new String[]{"FILE_PATH"},null,null,null,null,null);
         if(!all_music.moveToFirst())
             return;
         //不为空则为真能移至顶部
@@ -42,12 +40,10 @@ public class BaseActivity extends AppCompatActivity {
         File music_file;
         do{
             path = all_music.getString(all_music.getColumnIndex("FILE_PATH"));
-            name = all_music.getString(all_music.getColumnIndex("MUSIC_NAME"));
-            music_file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+path,name);
-            Log.e("BaseActivity",".checkMusicFile:"+music_file.getAbsolutePath());
+            music_file = new File(path);
             if(!music_file.exists()){
-                //不存在则删除
-                musicSQLiteDatabases.delete("MUSIC_PATH","FILE_PATH=? MUSIC_NAME=?",new String[]{path,name});
+                //不存在则删除 TODO:后期考虑放入已删除文件表，定时检查及清除记录以提高导入效率 + 考虑加入忽略的音乐文件表
+                musicSQLiteDatabases.delete("MUSIC","FILE_PATH=?",new String[]{path});
             }
         }while(all_music.moveToNext());
     }
