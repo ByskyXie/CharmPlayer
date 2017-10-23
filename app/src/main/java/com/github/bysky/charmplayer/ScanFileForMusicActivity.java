@@ -25,7 +25,7 @@ public class ScanFileForMusicActivity extends BaseActivity
         public ScanServiceConnection(ArrayList<String> list){ this.list=list;}
         public void beginScan(){
             if(scanBinder!=null)
-                scanBinder.startScan(list);
+                scanBinder.startScan(list,4,64);
             else
                 Log.e(".ScanFileForMusicAct","未调用onBind()未接受到Binder");
         }
@@ -37,7 +37,7 @@ public class ScanFileForMusicActivity extends BaseActivity
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            //TODO:当解绑时要做的事
+            //TODO:Android 系统会在与服务的连接意外中断时（例如当服务崩溃或被终止时）调用该方法 注意:当客户端取消绑定时，系统“绝对不会”调用该方法
 
         }
     }
