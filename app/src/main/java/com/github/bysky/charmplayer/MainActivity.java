@@ -1,7 +1,13 @@
 package com.github.bysky.charmplayer;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.v4.content.ContextCompat;
+import android.view.MotionEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -40,7 +46,6 @@ public class MainActivity extends BaseActivity
         button_musicList = (Button)findViewById(R.id.button_entrance_music_list);       button_musicList.setOnClickListener(this);
         button_scan = (Button)findViewById(R.id.button_entrance_scan);                  button_scan.setOnClickListener(this);
         button_fond = (Button)findViewById(R.id.button_entrance_i_fond);                button_fond.setOnClickListener(this);
-        //Toast.makeText(this,"create",Toast.LENGTH_SHORT).show();
     }
 
     @Override

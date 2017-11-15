@@ -17,8 +17,12 @@ import java.io.File;
 
 public class BaseActivity extends AppCompatActivity {
     protected Button play_pause,back_music,next_music;
-    protected static SQLiteDatabase musicSQLiteDatabases;
+    protected static SQLiteDatabase musicSQLiteDatabases;//TODO:后期需要将转换为private
     protected static MusicDatabaseOpenHelper musicDatabaseOpenHelper=null;
+    
+    public SQLiteDatabase getMusicSQLiteDatabases(){ return musicSQLiteDatabases;}
+    public MusicDatabaseOpenHelper getMusicDatabaseOpenHelper(){ return musicDatabaseOpenHelper;}
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
