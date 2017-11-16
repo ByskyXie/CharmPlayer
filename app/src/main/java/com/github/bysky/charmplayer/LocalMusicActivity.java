@@ -4,7 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
-public class LocalMusicActivity extends AppCompatActivity {
+public class LocalMusicActivity extends BaseActivity {
     private Toolbar toolbar_local;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -20,12 +20,13 @@
     </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
-        android:gravity="center_horizontal"
+        android:id="@+id/layout_scan_music"
+        android:gravity="center"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <ImageView
-            android:layout_marginTop="@dimen/vast_border"
+            android:id="@+id/img_scan_music_logo"
             android:background="@drawable/ic_scan_big"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

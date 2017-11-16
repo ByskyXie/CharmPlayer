@@ -1,7 +1,6 @@
 package com.github.bysky.charmplayer;
 
 import android.os.Environment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +12,7 @@ import android.widget.TextView;
 import java.io.File;
 import java.util.ArrayList;
 
-public class SelectFolderActivity extends AppCompatActivity {
+public class SelectFolderActivity extends BaseActivity {
     private Toolbar toolbar;
     private String preDir;
     private ArrayList<String> dirList;
@@ -29,12 +28,8 @@ public class SelectFolderActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
         //初始化控件
-        textView_showPath = (TextView)findViewById(R.id.text_view_show_path);
-        preDir =  Environment.getExternalStorageDirectory().toString();
-        textView_showPath.setText(preDir);
-        dirList = getDirList();
+        initialUI();
         //设置布局
         SelectFolderAdapter.OnItemClickListener listener = new SelectFolderAdapter.OnItemClickListener() {
             @Override
@@ -46,9 +41,17 @@ public class SelectFolderActivity extends AppCompatActivity {
         recycler_select = (RecyclerView) findViewById(R.id.recycler_select_folder);
         textView_showPath = (TextView)findViewById(R.id.text_view_show_path);
         LinearLayoutManager llm = new LinearLayoutManager(this, LinearLayout.VERTICAL,false);
-        SelectFolderAdapter adapter = new SelectFolderAdapter(this,dirList,listener,llm);
+        SelectFolderAdapter adapter = new SelectFolderAdapter(this,preDir,dirList,listener,llm);
         recycler_select.setLayoutManager(llm);
         recycler_select.setAdapter(adapter);
+    }
+
+    @Override
+    public void initialUI(){
+        textView_showPath = (TextView)findViewById(R.id.text_view_show_path);
+        preDir =  Environment.getExternalStorageDirectory().toString();
+        textView_showPath.setText(preDir);
+        dirList = getDirList();
     }
 
     public ArrayList<String> getDirList(){

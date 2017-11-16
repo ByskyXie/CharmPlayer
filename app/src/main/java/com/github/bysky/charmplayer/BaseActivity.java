@@ -51,4 +51,5 @@ public class BaseActivity extends AppCompatActivity {
             }
         }while(all_music.moveToNext());
     }
+    public void initialUI(){}
 }

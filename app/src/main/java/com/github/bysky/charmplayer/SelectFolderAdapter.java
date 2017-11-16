@@ -18,8 +18,9 @@ import java.util.ArrayList;
 
 public class SelectFolderAdapter extends RecyclerView.Adapter<SelectFolderAdapter.FolderItemHolder> {
 
-    private ArrayList<String> list;
+    private String preDir;
     private Context context;
+    private ArrayList<String> list;
     private LinearLayoutManager llm;
     private OnItemClickListener listener;
 
@@ -37,19 +38,20 @@ public class SelectFolderAdapter extends RecyclerView.Adapter<SelectFolderAdapte
         }
     }
 
-    SelectFolderAdapter(Context context, ArrayList<String> dirList
+    SelectFolderAdapter(Context context,String current_dir, ArrayList<String> dirList
             , OnItemClickListener listener, LinearLayoutManager llm){
-        this.listener = listener;
-        this.context = context;
-        this.list = dirList;
         this.llm = llm;
+        this.list = dirList;
+        this.context = context;
+        this.preDir = current_dir;
+        this.listener = listener;
     }
     @Override
     public void onBindViewHolder(FolderItemHolder holder, final int position) {
         if(list.isEmpty())
             return;
         String dir = list.get(position);
-        File file = new File(((SelectFolderActivity)context).getPreDir()+"/"+dir);
+        File file = new File(preDir+"/"+dir);
         holder.textView.setText(dir);
         if(file.isFile()){  //是文件则改变图标
             int temp = holder.img.getPaddingTop();

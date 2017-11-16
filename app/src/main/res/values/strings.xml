@@ -23,6 +23,8 @@
     <string name="scan_title">扫描歌曲</string>
     <string name="scan_mode_full">完全扫描</string>
     <string name="scan_mode_diy">自定义扫描</string>
+    <string name="select_file_confirm">开始扫描</string>
+    <string name="deep_option">未找到你想要的歌曲？\n试试深度扫描</string>
 
 
     <string name="local_title">本地音乐</string>

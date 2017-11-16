@@ -16,12 +16,46 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </android.support.design.widget.AppBarLayout>
+
     <TextView
         android:id="@+id/text_view_show_path"
+        android:background="#FFFACD"
+        android:padding="@dimen/small_border"
+        android:textSize="16sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_select_folder"
+        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
+    <LinearLayout
+        android:background="#f7f5f5"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <CheckBox
+            android:textSize="14sp"
+            android:layout_marginHorizontal="@dimen/small_border"
+            android:layout_gravity="center_vertical"
+            android:hint="@string/deep_option"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/button_select_folder_confirm"
+            android:layout_margin="@dimen/small_border"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:text="@string/select_file_confirm"
+            android:background="@drawable/layout_for_button_dark"
+            android:textColor="@color/white"
+            android:layout_weight="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 </LinearLayout>
