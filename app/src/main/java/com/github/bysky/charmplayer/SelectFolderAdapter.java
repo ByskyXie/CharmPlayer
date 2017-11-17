@@ -18,10 +18,9 @@ import java.util.ArrayList;
 
 public class SelectFolderAdapter extends RecyclerView.Adapter<SelectFolderAdapter.FolderItemHolder> {
 
-    private String preDir;
     private Context context;
     private ArrayList<String> list;
-    private LinearLayoutManager llm;
+    private RecyclerView.LayoutManager llm;
     private OnItemClickListener listener;
 
     static class FolderItemHolder extends RecyclerView.ViewHolder{
@@ -38,33 +37,37 @@ public class SelectFolderAdapter extends RecyclerView.Adapter<SelectFolderAdapte
         }
     }
 
-    SelectFolderAdapter(Context context,String current_dir, ArrayList<String> dirList
-            , OnItemClickListener listener, LinearLayoutManager llm){
+    SelectFolderAdapter(Context context, ArrayList<String> dirList
+            , OnItemClickListener listener, RecyclerView.LayoutManager llm){
         this.llm = llm;
         this.list = dirList;
         this.context = context;
-        this.preDir = current_dir;
         this.listener = listener;
     }
+
+    public void setList(ArrayList<String> list) {
+        this.list = list;
+    }
+
     @Override
     public void onBindViewHolder(FolderItemHolder holder, final int position) {
-        if(list.isEmpty())
-            return;
         String dir = list.get(position);
+        final String preDir = ((SelectFolderActivity)context).getPreDir();
         File file = new File(preDir+"/"+dir);
         holder.textView.setText(dir);
-        if(file.isFile()){  //是文件则改变图标
-            int temp = holder.img.getPaddingTop();
+        int temp = holder.img.getPaddingTop();
+        if(file.isFile())  //是文件则改变图标
             holder.img.setBackgroundResource(R.drawable.ic_file);
-            holder.img.setPadding(0,temp,0,temp);
-        }
+        else
+            holder.img.setBackgroundResource(R.drawable.ic_folder);
+        holder.img.setPadding(0,temp,0,temp);
         //TODO:check监听器记录
 
         //监听器
         holder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClick(position,list);
+                listener.onClick(context,preDir+"/"+list.get(position));
             }
         });
         //改变logo长宽+改变控件宽度
@@ -87,6 +90,6 @@ public class SelectFolderAdapter extends RecyclerView.Adapter<SelectFolderAdapte
     }
 
     interface OnItemClickListener{
-        void onClick(int position ,ArrayList<String> list);
+        void onClick(Context context,String path);
     }
 }

@@ -32,12 +32,12 @@ public class ScanMusicActivity extends BaseActivity
     }
 
     @Override
-    public void initialUI() {
+    protected void initialUI() {
         //以下设置logo、按钮尺寸
-        int width =  getResources().getDisplayMetrics().widthPixels;
+        int width =  (int)(0.618*getResources().getDisplayMetrics().widthPixels);
         img_view = (ImageView)findViewById(R.id.img_scan_music_logo);
         ViewGroup.LayoutParams params = img_view.getLayoutParams();
-        params.width = params.height = width =  (int)(width * 0.618);   //黄金比例
+        params.width = params.height = width;   //黄金比例
         button_scan_all = (Button)findViewById(R.id.button_scan_all);   button_scan_all.setOnClickListener(this);
         button_scan_all.getLayoutParams().width =  width;
         button_scan_diy = (Button)findViewById(R.id.button_scan_diy);   button_scan_diy.setOnClickListener(this);

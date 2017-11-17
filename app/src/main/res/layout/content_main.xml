@@ -10,36 +10,40 @@
     tools:showIn="@layout/app_bar_main">
 
     <LinearLayout
+        android:id="@+id/content_main_full"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
+            android:id="@+id/content_main_upper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Button
-                android:padding="@dimen/big_border"
                 android:id="@+id/button_entrance_local_music"
                 android:background="@drawable/layout_for_button"
                 android:drawableTop="@drawable/ic_local"
+                android:padding="@dimen/mid_border"
                 android:text="@string/local_music"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent" />
             <Button
-                android:padding="@dimen/big_border"
                 android:id="@+id/button_entrance_scan"
                 android:background="@drawable/layout_for_button"
                 android:drawableTop="@drawable/ic_scan"
                 android:layout_weight="1"
+                android:padding="@dimen/mid_border"
                 android:text="@string/scan_music"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"/>
         </LinearLayout>
+
         <LinearLayout
+            android:id="@+id/content_main_lower"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Button
-                android:padding="@dimen/big_border"
+                android:padding="@dimen/mid_border"
                 android:id="@+id/button_entrance_music_list"
                 android:background="@drawable/layout_for_button"
                 android:drawableTop="@drawable/ic_music_list"
@@ -48,7 +52,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"/>
             <Button
-                android:padding="@dimen/big_border"
+                android:padding="@dimen/mid_border"
                 android:id="@+id/button_entrance_i_fond"
                 android:background="@drawable/layout_for_button"
                 android:drawableTop="@drawable/ic_fond"

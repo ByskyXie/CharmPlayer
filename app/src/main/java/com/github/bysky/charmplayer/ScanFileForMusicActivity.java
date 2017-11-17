@@ -10,6 +10,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -18,29 +22,9 @@ public class ScanFileForMusicActivity extends BaseActivity
 
     private ScanServiceConnection connection;
     private Button button_cancel;
-
-    private class ScanServiceConnection implements ServiceConnection{
-        public ScanFileService.ScanBinder scanBinder;
-        public ArrayList<String> list;
-        public ScanServiceConnection(ArrayList<String> list){ this.list=list;}
-        public void beginScan(){
-            if(scanBinder!=null)
-                scanBinder.startScan(list,4,64);
-            else
-                Log.e(".ScanFileForMusicAct","未调用onBind()未接受到Binder");
-        }
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            scanBinder = (ScanFileService.ScanBinder)service;
-            beginScan();
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            //TODO:Android 系统会在与服务的连接意外中断时（例如当服务崩溃或被终止时）调用该方法 注意:当客户端取消绑定时，系统“绝对不会”调用该方法
-
-        }
-    }
+    private TextView textViewProgress;
+    private ImageView imgView;
+    private ScanFileService.ScanBinder scanBinder;  //服务绑定器
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,15 +33,26 @@ public class ScanFileForMusicActivity extends BaseActivity
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar_scan_file);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        button_cancel = (Button)findViewById(R.id.button_scan_cancel);
-        button_cancel.setOnClickListener(this);
-        //启动全局搜索服务
-        Intent intent = new Intent(this,ScanFileService.class);
+        //初始化界面
+        initialUI();
         //TODO:需要和服务绑定，就涉及到多绑定互斥问题
+        //启动全局搜索服务
         connection = new ScanServiceConnection(getSelectedFolder());
         //绑定服务
-        bindService(intent,connection,BIND_AUTO_CREATE);
+        bindService(new Intent(this,ScanFileService.class),connection,BIND_AUTO_CREATE);
+        scanBinder = connection.getScanBinder();
+    }
+
+    @Override
+    protected void initialUI() {
+        int width = (int)(0.618*getResources().getDisplayMetrics().widthPixels);
+        textViewProgress = (TextView)findViewById(R.id.text_view_scan_progress);
+        imgView = (ImageView)findViewById(R.id.image_scanning_logo);
+        button_cancel = (Button)findViewById(R.id.button_scan_cancel);
+        button_cancel.setOnClickListener(this);
+        //设置宽度
+        imgView.getLayoutParams().width = imgView.getLayoutParams().height = width;
+        button_cancel.getLayoutParams().width = width;
     }
 
     public ArrayList<String> getSelectedFolder(){
@@ -79,6 +74,8 @@ public class ScanFileForMusicActivity extends BaseActivity
         switch (v.getId()){
             case R.id.button_scan_cancel:
                 //TODO:停止服务 stopService( )
+                scanBinder.stopScan();
+                Toast.makeText(this,"扫描已停止",Toast.LENGTH_SHORT).show();
                 break;
         }
     }

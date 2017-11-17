@@ -15,30 +15,42 @@ import java.util.ArrayList;
 
 import static com.github.bysky.charmplayer.BaseActivity.musicSQLiteDatabases;
 
-public class ScanFileService extends Service {
+public class ScanFileService extends Service
+    implements Runnable{
 
     public final int SCAN_RUN = 1;
     public final int SCAN_STOP = 0;
-    private int scan_statue;
     private int maxDepth;
     private long lengthLimit;  //默认大于64KB的歌曲
     private ArrayList<String> arry_selected_path;
     private ArrayList<File> arry_music_file;
     private ScanBinder binder;
+    private Thread thread;  //标记扫描对象
+    private int scanFlag;   //作为服务起始/停止的依据
 
+    /**
+     *  服务控制类
+     * */
     public class ScanBinder extends Binder{
-        public void startScan(ArrayList<String> list, int maxFolderDepth, int fileMinLength){
-            arry_selected_path = list;
-            mainScan(arry_selected_path,maxFolderDepth,fileMinLength);
-        }
-        public void getProgress(){
 
+        public void startScan(ArrayList<String> scanList, int maxFolderDepth, int fileMinLength){
+            mainScan(scanList,maxFolderDepth,fileMinLength);
         }
+
+        public String getProgress(){
+            return null;
+        }
+
+        public void stopScan(){
+            scanFlag = SCAN_STOP;
+        }
+
     }
+
     @Override
     public IBinder onBind(Intent intent) {
-        scan_statue = SCAN_RUN;
-        if(binder==null)
+        scanFlag = SCAN_RUN;
+        if(binder == null)
             binder = new ScanBinder();
         return binder;
     }
@@ -53,76 +65,78 @@ public class ScanFileService extends Service {
     public int onStartCommand(Intent intent, /**@IntDef(value = {Service.START_FLAG_REDELIVERY, Service.START_FLAG_RETRY}, flag = true)*/ int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
         //每次启用服务前的准备
-        Log.w(".ScanFileService","Standard Service start( startService(intent) )");
-        arry_selected_path = intent.getBundleExtra("selectedFolder").getStringArrayList("folder");
         return Service.START_NOT_STICKY;
     }
 
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
-    private void mainScan(ArrayList<String> path, int maxFolderDepth, int fileMinLength_KB){
-        File file;
+    private void mainScan(ArrayList<String> pathList, int maxFolderDepth, int fileMinLength_KB){
+        //准备工作
+        arry_selected_path = pathList;
         setMinLen(fileMinLength_KB);
         if(maxFolderDepth < 1 ){
             Log.w(".ScanFileService","the param import is illegal(maxFolderDepth < 1)");
             return;
         }else
             maxDepth = maxFolderDepth;
+        //开始扫描
+        thread = new Thread(this);
+        thread.start();
+    }
 
+    @Override
+    public void run() {
+        File file;
         arry_music_file = new ArrayList<File>();
-        //迭代检索
-        for(String s:path){
-            if(!checkState())
-                return;//不允许继续搜索
+        for(String s:arry_selected_path){
+            if(!isAllowScan())
+                return;
             file = new File(s);
-            loopFileTree(arry_music_file,new File[]{file},1);
+            loopFileTree(arry_music_file,new File[]{file},1 );
         }
         //查询入库
         updateDatabase(arry_music_file);
-        Log.w("ScanFileService","mainScan()-> Scan has finished !!!!!!!");
+        Log.w("ScanFileService","mainScan()-> Scan has finished !");
     }
-    private void loopFileTree(ArrayList<File> arry,File[] fileTree,int treeDepth){
-        //调试用，使用前要拿掉
-        if(treeDepth > maxDepth)
+
+    private void loopFileTree(ArrayList<File> pathList, File[] fileTree, int treeDepth){
+        if(treeDepth > maxDepth || !isAllowScan())//不允许继续搜索
             return;
         //根据允许搜索的目录，执行搜索任务
         for(File file:fileTree){
-
-            if(!checkState())
-                return;//不允许继续搜索
-
             //遍历搜索
             if(!file.isDirectory()){
                 //判断是否为音乐文件，是则加入arry
                 String suffix = file.getName().substring(file.getName().lastIndexOf(".")+1);
                 if(suffix.equalsIgnoreCase("mp3")||suffix.equalsIgnoreCase("wav")||suffix.equalsIgnoreCase("arm")
                         ||suffix.equalsIgnoreCase("mid"))
-                    arry.add(file);
+                    pathList.add(file);
             }else
-                loopFileTree(arry,file.listFiles(),treeDepth+1);
+                loopFileTree(pathList,file.listFiles(),treeDepth+1);
         }
     }
+
     private void updateDatabase(ArrayList<File> fileList){
         ContentValues contentValues = new ContentValues();    //保存插入数据集
-        String music_name,artist; //保存文件信息
+        String music_name,artist;   //保存文件信息
         RandomAccessFile randaf;        //文件定位读取
         ArrayList<String> dataList = new ArrayList<String>();
-        Cursor cursor = musicSQLiteDatabases.query("MUSIC",new String[]{"FILE_PATH"},null,null,null,null,null);
-        //将曲库中的歌曲放入dataList便于比较
-        if(cursor.moveToFirst())
-            do dataList.add(cursor.getString(cursor.getColumnIndex("FILE_PATH")));
-            while (cursor.moveToNext());
-        //逐一检查
+        Cursor cursor = musicSQLiteDatabases.query("MUSIC",new String[]{"FILE_PATH"}
+            ,null,null,null,null,null);
+
+        //将之前已保存的歌曲放入dataList用于比较
+        if(cursor.moveToFirst()){
+            do {
+                if(!isAllowScan())
+                    return; //不允许搜索
+                dataList.add(cursor.getString(cursor.getColumnIndex("FILE_PATH")));
+            }while (cursor.moveToNext());
+        }
+
+        //通过比较找出那些新增的歌曲并入库
         for(File file:fileList){
+            if(!isAllowScan())
+                return; //不允许继续搜索
 
-            if(!checkState())
-                return;//不允许继续搜索
-
-            if(file.length()<lengthLimit || dataList.contains(file.getAbsolutePath()))
+            if(file.length() < lengthLimit || dataList.contains(file.getAbsolutePath()))
                 continue;
             //未包含于曲库说明是新歌曲（且大于大小限制）
             try{
@@ -178,5 +192,5 @@ public class ScanFileService extends Service {
     /**
      * 检查搜索状态
      * */
-    private boolean checkState(){ return scan_statue==SCAN_RUN;}
+    private boolean isAllowScan(){ return scanFlag==SCAN_RUN;}
 }

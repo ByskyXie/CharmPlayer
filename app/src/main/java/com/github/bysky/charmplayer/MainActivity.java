@@ -1,13 +1,7 @@
 package com.github.bysky.charmplayer;
 
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.support.v4.content.ContextCompat;
-import android.view.MotionEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -30,7 +24,6 @@ public class MainActivity extends BaseActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
-        //使当前活动作为返回活动
         getSupportActionBar().setHomeButtonEnabled(true);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -38,10 +31,15 @@ public class MainActivity extends BaseActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+        //初始化
+        initialUI();
+    }
 
+    @Override
+    protected void initialUI() {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
+        //
         button_localMusic = (Button) findViewById(R.id.button_entrance_local_music);    button_localMusic.setOnClickListener(this);
         button_musicList = (Button)findViewById(R.id.button_entrance_music_list);       button_musicList.setOnClickListener(this);
         button_scan = (Button)findViewById(R.id.button_entrance_scan);                  button_scan.setOnClickListener(this);
