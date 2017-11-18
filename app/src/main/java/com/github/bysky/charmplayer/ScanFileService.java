@@ -87,14 +87,17 @@ public class ScanFileService extends Service
         File file;
         arry_music_file = new ArrayList<File>();
         for(String s:arry_selected_path){
-            if(!isAllowScan())
+            if(!isAllowScan()){
+                Log.w("ScanFileService","run()-> Scan has canceled !");
                 return;
+            }
             file = new File(s);
             loopFileTree(arry_music_file,new File[]{file},1 );
         }
         //查询入库
         updateDatabase(arry_music_file);
-        Log.w("ScanFileService","mainScan()-> Scan has finished !");
+        if(isAllowScan())
+            Log.w("ScanFileService","run()-> Scan has finished !");
     }
 
     private void loopFileTree(ArrayList<File> pathList, File[] fileTree, int treeDepth){

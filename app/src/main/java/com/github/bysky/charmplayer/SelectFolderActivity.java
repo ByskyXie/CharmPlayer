@@ -1,6 +1,7 @@
 package com.github.bysky.charmplayer;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Environment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import java.io.File;
@@ -43,6 +45,7 @@ public class SelectFolderActivity extends BaseActivity
 
     @Override
     protected void initialUI(){
+        findViewById(R.id.button_select_folder_confirm).setOnClickListener(this);
         textView_showPath = (TextView)findViewById(R.id.text_view_show_path);
         textView_showPath.setOnClickListener(this);
         rootDir = preDir =  Environment.getExternalStorageDirectory().toString();
@@ -80,10 +83,38 @@ public class SelectFolderActivity extends BaseActivity
                 listener.onClick(this, path);
                 break;
             case R.id.button_select_folder_confirm:
-                ArrayList<String> scanList = new ArrayList<String>();
-
+                //获取选定目录
+                ArrayList<String> scanList = getSelectedFolder();
+                //启动扫描服务
+                Intent intent = new Intent(this,ScanFileForMusicActivity.class);
+                //设置最小文件大小
+                intent.putStringArrayListExtra("scanList",scanList);
+                //设置搜索深度
+                if(((CheckBox)findViewById(R.id.checkbox_deep_scan)).isChecked())
+                    intent.putExtra("maxFolderDepth",0xfffffff);
+                else
+                    intent.putExtra("maxFolderDepth",4);
+                intent.putExtra("fileMinLength",64);
+                startActivity(intent);
                 break;
         }
+    }
+
+    protected ArrayList<String> getSelectedFolder(){
+        ArrayList<String> selectedList = new ArrayList<String>();
+        RecyclerView.LayoutManager layoutManager = recycler_select.getLayoutManager();
+        int childCount = layoutManager.getChildCount();
+        for(int i=0 ;i<childCount ;i++){
+            View view =  layoutManager.getChildAt(i);
+            if(!((CheckBox)view.findViewById(R.id.checkBox_item_select_folder)).isChecked())
+                continue;
+            selectedList.add(preDir+"/"+((TextView)view.findViewById(R.id.text_view_item_select_folder)).getText());
+        }
+        if(selectedList.isEmpty())  Log.e("ff","Empty");
+        for(String s:selectedList){
+            Log.e("select",s);
+        }
+        return selectedList;
     }
 
     protected void refreshFolderPath(){

@@ -12,6 +12,9 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import java.io.File;
+import java.util.ArrayList;
+
 public class ScanMusicActivity extends BaseActivity
     implements View.OnClickListener{
 
@@ -43,13 +46,13 @@ public class ScanMusicActivity extends BaseActivity
         button_scan_diy = (Button)findViewById(R.id.button_scan_diy);   button_scan_diy.setOnClickListener(this);
         button_scan_diy.getLayoutParams().width =  width;
     }
-
     @Override
     public void onClick(View v) {
         Intent intent;
         switch(v.getId()){
             case R.id.button_scan_all:
                 intent = new Intent(this,ScanFileForMusicActivity.class);
+                intent.putStringArrayListExtra("scanList",getExternalFolder());
                 startActivity(intent);
                 break;
             case R.id.button_scan_diy:
@@ -57,5 +60,13 @@ public class ScanMusicActivity extends BaseActivity
                 startActivity(intent);
                 break;
         }
+    }
+    //用于获取默认扫描文件夹
+    public ArrayList<String> getExternalFolder(){
+        ArrayList<String> arry = new ArrayList<String>();
+        File[] fileTree = Environment.getExternalStorageDirectory().listFiles();
+        for(File file:fileTree)
+            arry.add(file.getAbsolutePath());
+        return arry;
     }
 }

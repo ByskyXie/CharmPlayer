@@ -4,7 +4,6 @@ import android.content.ComponentName;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.util.Log;
-
 import java.util.ArrayList;
 
 /**
@@ -15,15 +14,19 @@ public class ScanServiceConnection implements ServiceConnection {
 
     private ScanFileService.ScanBinder scanBinder;
     private ArrayList<String> scanList;
-    private int maxFolderDepth = 4;
-    private int fileMinLength = 64;
+    private int maxFolderDepth;
+    private int fileMinLength;
+
+    public ScanServiceConnection(ArrayList<String> scanList,int maxFolderDepth,int fileMinLength){
+        this.scanList = scanList;
+        this.maxFolderDepth = maxFolderDepth;
+        this.fileMinLength = fileMinLength;
+    }
 
     public ScanServiceConnection(ArrayList<String> scanList){
         this.scanList = scanList;
-    }
-
-    public void setScanList(ArrayList<String> scanList){
-        this.scanList = scanList;
+        this.maxFolderDepth = 4;
+        this.fileMinLength = 64;
     }
 
     @Override
@@ -42,6 +45,13 @@ public class ScanServiceConnection implements ServiceConnection {
             scanBinder.startScan(scanList,maxFolderDepth,fileMinLength);
         else
             Log.e(".ScanFileForMusicAct","未调用onBind()未接受到Binder");
+    }
+
+    protected void beginScan(ArrayList<String> scanList,int maxFolderDepth, int fileMinLength){
+        this.scanList = scanList;
+        this.maxFolderDepth = 4;
+        this.fileMinLength = 64;
+        scanBinder.startScan(scanList,maxFolderDepth,fileMinLength);
     }
 
     protected void beginScan(ArrayList<String> scanList){

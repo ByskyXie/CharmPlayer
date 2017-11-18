@@ -24,7 +24,6 @@ public class ScanFileForMusicActivity extends BaseActivity
     private Button button_cancel;
     private TextView textViewProgress;
     private ImageView imgView;
-    private ScanFileService.ScanBinder scanBinder;  //服务绑定器
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +34,16 @@ public class ScanFileForMusicActivity extends BaseActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //初始化界面
         initialUI();
+        //获得搜索目录
+        Intent intent = getIntent();
+        ArrayList<String> scanList = intent.getStringArrayListExtra("scanList");
+        int maxFolderDepth = intent.getIntExtra("maxFoldDepth",4);
+        int fileMinLength = intent.getIntExtra("fileMinLength",64);
         //TODO:需要和服务绑定，就涉及到多绑定互斥问题
         //启动全局搜索服务
-        connection = new ScanServiceConnection(getSelectedFolder());
+        connection = new ScanServiceConnection(scanList,maxFolderDepth,fileMinLength);
         //绑定服务
         bindService(new Intent(this,ScanFileService.class),connection,BIND_AUTO_CREATE);
-        scanBinder = connection.getScanBinder();
     }
 
     @Override
@@ -55,14 +58,6 @@ public class ScanFileForMusicActivity extends BaseActivity
         button_cancel.getLayoutParams().width = width;
     }
 
-    public ArrayList<String> getSelectedFolder(){
-        ArrayList<String> arry = new ArrayList<String>();
-        File[] fileTree = Environment.getExternalStorageDirectory().listFiles();
-        for(File file:fileTree)
-            arry.add(file.getAbsolutePath());
-        return arry;
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -73,8 +68,12 @@ public class ScanFileForMusicActivity extends BaseActivity
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.button_scan_cancel:
-                //TODO:停止服务 stopService( )
-                scanBinder.stopScan();
+                //TODO:后期涉及停止动画
+                connection.stopScan();
+                button_cancel.setBackgroundResource(R.drawable.layout_for_button);
+                button_cancel.setTextColor(getResources().getColor(R.color.black));
+                button_cancel.setText("已停止");
+                button_cancel.setEnabled(false);
                 Toast.makeText(this,"扫描已停止",Toast.LENGTH_SHORT).show();
                 break;
         }

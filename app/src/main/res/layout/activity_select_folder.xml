@@ -39,6 +39,7 @@
         android:layout_height="wrap_content">
 
         <CheckBox
+            android:id="@+id/checkbox_deep_scan"
             android:textSize="14sp"
             android:layout_marginHorizontal="@dimen/small_border"
             android:layout_gravity="center_vertical"

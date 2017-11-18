@@ -32,7 +32,7 @@ public class SelectFolderAdapter extends RecyclerView.Adapter<SelectFolderAdapte
             super(itemView);
             parent = itemView;
             checkBox = itemView.findViewById(R.id.checkBox_item_select_folder);
-            textView = itemView.findViewById(R.id.textView_item_select_folder);
+            textView = itemView.findViewById(R.id.text_view_item_select_folder);
             img = itemView.findViewById(R.id.img_item_select_folder);
         }
     }
