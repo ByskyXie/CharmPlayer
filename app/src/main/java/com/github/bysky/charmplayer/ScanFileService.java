@@ -2,11 +2,17 @@ package com.github.bysky.charmplayer;
 
 import android.app.Service;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Binder;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -27,14 +33,15 @@ public class ScanFileService extends Service
     private ScanBinder binder;
     private Thread thread;  //标记扫描对象
     private int scanFlag;   //作为服务起始/停止的依据
+    private ScanFileForMusicActivity.ScanHandler handler;
 
     /**
      *  服务控制类
      * */
     public class ScanBinder extends Binder{
 
-        public void startScan(ArrayList<String> scanList, int maxFolderDepth, int fileMinLength){
-            mainScan(scanList,maxFolderDepth,fileMinLength);
+        public void startScan(ArrayList<String> scanList, ScanFileForMusicActivity.ScanHandler handler, int maxFolderDepth, int fileMinLength){
+            mainScan(scanList,handler,maxFolderDepth,fileMinLength);
         }
 
         public String getProgress(){
@@ -68,8 +75,9 @@ public class ScanFileService extends Service
         return Service.START_NOT_STICKY;
     }
 
-    private void mainScan(ArrayList<String> pathList, int maxFolderDepth, int fileMinLength_KB){
+    private void mainScan(ArrayList<String> pathList, ScanFileForMusicActivity.ScanHandler handler, int maxFolderDepth, int fileMinLength_KB){
         //准备工作
+        this.handler = handler;
         arry_selected_path = pathList;
         setMinLen(fileMinLength_KB);
         if(maxFolderDepth < 1 ){
@@ -96,9 +104,23 @@ public class ScanFileService extends Service
         }
         //查询入库
         updateDatabase(arry_music_file);
-        if(isAllowScan())
+        //返回结果
+        Message message = new Message();
+        if(isAllowScan()){
+            message.what = handler.SCAN_FINISH;
             Log.w("ScanFileService","run()-> Scan has finished !");
+        }else
+            message.what = handler.SCAN_STOP;
+        handler.sendMessage(message);
     }
+
+//    private void hintFinished(){
+//        Looper.prepare();
+//        Toast.makeText(getApplicationContext(),"扫描完成",Toast.LENGTH_SHORT).show();
+//        Looper.loop();
+//        //TODO:取消扫描按钮enAble（false） 由于是线程不安全的需要用到异步
+//
+//    }
 
     private void loopFileTree(ArrayList<File> pathList, File[] fileTree, int treeDepth){
         if(treeDepth > maxDepth || !isAllowScan())//不允许继续搜索

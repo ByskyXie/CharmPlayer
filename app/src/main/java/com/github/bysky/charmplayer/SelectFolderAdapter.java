@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import java.io.File;
@@ -62,7 +63,17 @@ public class SelectFolderAdapter extends RecyclerView.Adapter<SelectFolderAdapte
             holder.img.setBackgroundResource(R.drawable.ic_folder);
         holder.img.setPadding(0,temp,0,temp);
         //TODO:check监听器记录
-
+        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                int temp = ((SelectFolderActivity) context).getOnCheckedNumber();
+                if(isChecked)
+                    ((SelectFolderActivity) context).setOnCheckedNumber(temp+1);
+                else
+                    ((SelectFolderActivity) context).setOnCheckedNumber(temp-1);
+                ((SelectFolderActivity) context).refreshConfirmButtonState();
+            }
+        });
         //监听器
         holder.parent.setOnClickListener(new View.OnClickListener() {
             @Override

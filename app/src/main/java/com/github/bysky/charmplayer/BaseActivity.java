@@ -3,6 +3,7 @@ package com.github.bysky.charmplayer;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -52,4 +53,16 @@ public class BaseActivity extends AppCompatActivity {
         }while(all_music.moveToNext());
     }
     protected void initialUI(){}
+
+    protected void setButtonUnable(Button button){
+        button.setEnabled(false);
+        button.setBackgroundResource(R.drawable.layout_for_button);
+        button.setTextColor(Color.GRAY);
+    }
+
+    protected void setButtonEnable(Button button){
+        button.setEnabled(true);
+        button.setBackgroundResource(R.drawable.layout_for_button_dark);
+        button.setTextColor(Color.WHITE);
+    }
 }

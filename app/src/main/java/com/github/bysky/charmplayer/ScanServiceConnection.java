@@ -1,6 +1,7 @@
 package com.github.bysky.charmplayer;
 
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.util.Log;
@@ -16,14 +17,17 @@ public class ScanServiceConnection implements ServiceConnection {
     private ArrayList<String> scanList;
     private int maxFolderDepth;
     private int fileMinLength;
+    private ScanFileForMusicActivity.ScanHandler scanHandler;
 
-    public ScanServiceConnection(ArrayList<String> scanList,int maxFolderDepth,int fileMinLength){
+    public ScanServiceConnection(ArrayList<String> scanList, ScanFileForMusicActivity.ScanHandler scanHandler,int maxFolderDepth, int fileMinLength){
         this.scanList = scanList;
+        this.scanHandler = scanHandler;
         this.maxFolderDepth = maxFolderDepth;
         this.fileMinLength = fileMinLength;
     }
 
-    public ScanServiceConnection(ArrayList<String> scanList){
+    public ScanServiceConnection(ArrayList<String> scanList, ScanFileForMusicActivity.ScanHandler scanHandler){
+        this.scanHandler = scanHandler;
         this.scanList = scanList;
         this.maxFolderDepth = 4;
         this.fileMinLength = 64;
@@ -42,19 +46,21 @@ public class ScanServiceConnection implements ServiceConnection {
     }
     protected void beginScan(){
         if(scanBinder!=null)
-            scanBinder.startScan(scanList,maxFolderDepth,fileMinLength);
+            scanBinder.startScan(scanList,scanHandler,maxFolderDepth,fileMinLength);
         else
             Log.e(".ScanFileForMusicAct","未调用onBind()未接受到Binder");
     }
 
-    protected void beginScan(ArrayList<String> scanList,int maxFolderDepth, int fileMinLength){
+    protected void beginScan(ArrayList<String> scanList, ScanFileForMusicActivity.ScanHandler scanHandler,int maxFolderDepth, int fileMinLength){
+        this.scanHandler = scanHandler;
         this.scanList = scanList;
         this.maxFolderDepth = 4;
         this.fileMinLength = 64;
-        scanBinder.startScan(scanList,maxFolderDepth,fileMinLength);
+        scanBinder.startScan(scanList,scanHandler,maxFolderDepth,fileMinLength);
     }
 
-    protected void beginScan(ArrayList<String> scanList){
+    protected void beginScan(ArrayList<String> scanList, ScanFileForMusicActivity.ScanHandler scanHandler){
+        this.scanHandler = scanHandler;
         this.scanList = scanList;
         beginScan();
     }
@@ -63,8 +69,5 @@ public class ScanServiceConnection implements ServiceConnection {
         scanBinder.stopScan();
     }
 
-    protected ScanFileService.ScanBinder getScanBinder(){
-        return scanBinder;
-    }
 
 }

@@ -5,7 +5,10 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -21,9 +24,30 @@ public class ScanFileForMusicActivity extends BaseActivity
     implements View.OnClickListener{
 
     private ScanServiceConnection connection;
-    private Button button_cancel;
+    private Button buttonCancel;
     private TextView textViewProgress;
     private ImageView imgView;
+    private ScanHandler handler = new ScanHandler();
+
+    public class ScanHandler extends Handler{
+        public final static int SCAN_FINISH = 1;
+        public final static int SCAN_STOP = 0;
+
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case SCAN_FINISH:
+                    setButtonUnable(buttonCancel);
+                    Toast.makeText(getApplicationContext(),"扫描完成",Toast.LENGTH_SHORT).show();
+                    break;
+                case SCAN_STOP:
+                    setButtonUnable(buttonCancel);
+                    buttonCancel.setText("已停止");
+                    Toast.makeText(getApplicationContext(),"扫描已停止",Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +65,7 @@ public class ScanFileForMusicActivity extends BaseActivity
         int fileMinLength = intent.getIntExtra("fileMinLength",64);
         //TODO:需要和服务绑定，就涉及到多绑定互斥问题
         //启动全局搜索服务
-        connection = new ScanServiceConnection(scanList,maxFolderDepth,fileMinLength);
+        connection = new ScanServiceConnection(scanList,handler,maxFolderDepth,fileMinLength);
         //绑定服务
         bindService(new Intent(this,ScanFileService.class),connection,BIND_AUTO_CREATE);
     }
@@ -51,11 +75,11 @@ public class ScanFileForMusicActivity extends BaseActivity
         int width = (int)(0.618*getResources().getDisplayMetrics().widthPixels);
         textViewProgress = (TextView)findViewById(R.id.text_view_scan_progress);
         imgView = (ImageView)findViewById(R.id.image_scanning_logo);
-        button_cancel = (Button)findViewById(R.id.button_scan_cancel);
-        button_cancel.setOnClickListener(this);
+        buttonCancel = (Button)findViewById(R.id.button_scan_cancel);
+        buttonCancel.setOnClickListener(this);
         //设置宽度
         imgView.getLayoutParams().width = imgView.getLayoutParams().height = width;
-        button_cancel.getLayoutParams().width = width;
+        buttonCancel.getLayoutParams().width = width;
     }
 
     @Override
@@ -70,12 +94,11 @@ public class ScanFileForMusicActivity extends BaseActivity
             case R.id.button_scan_cancel:
                 //TODO:后期涉及停止动画
                 connection.stopScan();
-                button_cancel.setBackgroundResource(R.drawable.layout_for_button);
-                button_cancel.setTextColor(getResources().getColor(R.color.black));
-                button_cancel.setText("已停止");
-                button_cancel.setEnabled(false);
-                Toast.makeText(this,"扫描已停止",Toast.LENGTH_SHORT).show();
                 break;
         }
+    }
+
+    public Button getButtonCancel() {
+        return buttonCancel;
     }
 }
