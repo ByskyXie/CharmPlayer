@@ -56,13 +56,11 @@ public class BaseActivity extends AppCompatActivity {
 
     protected void setButtonUnable(Button button){
         button.setEnabled(false);
-        button.setBackgroundResource(R.drawable.layout_for_button);
         button.setTextColor(Color.GRAY);
     }
 
     protected void setButtonEnable(Button button){
         button.setEnabled(true);
-        button.setBackgroundResource(R.drawable.layout_for_button_dark);
         button.setTextColor(Color.WHITE);
     }
 }

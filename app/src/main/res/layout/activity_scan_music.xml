@@ -33,7 +33,7 @@
         <Button
             android:id="@+id/button_scan_all"
             android:textColor="@color/white"
-            android:background="@drawable/layout_for_button_dark"
+            android:background="@drawable/button_background_dark"
             android:textSize="21sp"
             android:drawableTint="@color/white"
             android:layout_marginTop="@dimen/large_border"
@@ -46,7 +46,7 @@
         <Button
             android:id="@+id/button_scan_diy"
             android:textColor="@color/white"
-            android:background="@drawable/layout_for_button_dark"
+            android:background="@drawable/button_background_dark"
             android:textSize="21sp"
             android:drawableTint="@color/white"
             android:paddingLeft="@dimen/big_border"

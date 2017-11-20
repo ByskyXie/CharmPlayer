@@ -2,12 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:clickable="true"
+    android:focusable="true"
     android:layout_gravity="bottom"
     android:background="@drawable/layout_for_playing_nav"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <ProgressBar
+        android:id="@+id/progress_bar_play"
         android:paddingLeft="@dimen/mini_border"
         android:paddingRight="@dimen/mini_border"
         android:clickable="false"
@@ -29,7 +31,7 @@
 
             <TextView
                 android:id="@+id/text_view_music_name"
-                android:gravity="left"
+                android:gravity="start"
                 android:textSize="20sp"
                 android:textColor="@color/darkPrimaryColor_red"
                 android:text="@string/default_music_title"
@@ -47,6 +49,7 @@
         <Button
             android:id="@+id/button_control_back"
             android:layout_margin="@dimen/mini_border"
+            android:layout_gravity="center"
             android:background="@drawable/ic_pre_music"
             android:layout_weight="0"
             android:layout_width="@dimen/icon_size_small"
@@ -54,6 +57,7 @@
         <Button
             android:id="@+id/button_control_play"
             android:layout_margin="@dimen/mini_border"
+            android:layout_gravity="center"
             android:background="@drawable/ic_play"
             android:layout_width="48dp"
             android:layout_weight="0"
@@ -61,9 +65,11 @@
         <Button
             android:id="@+id/button_control_next"
             android:layout_margin="@dimen/mini_border"
+            android:layout_gravity="center"
             android:background="@drawable/ic_next_music"
             android:layout_weight="0"
             android:layout_width="@dimen/icon_size_small"
             android:layout_height="@dimen/icon_size_small" />
     </LinearLayout>
+
 </LinearLayout>

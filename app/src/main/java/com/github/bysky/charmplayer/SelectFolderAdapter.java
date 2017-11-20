@@ -61,8 +61,9 @@ public class SelectFolderAdapter extends RecyclerView.Adapter<SelectFolderAdapte
             holder.img.setBackgroundResource(R.drawable.ic_file);
         else
             holder.img.setBackgroundResource(R.drawable.ic_folder);
+
+        //检查选项
         holder.img.setPadding(0,temp,0,temp);
-        //TODO:check监听器记录
         holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -74,6 +75,7 @@ public class SelectFolderAdapter extends RecyclerView.Adapter<SelectFolderAdapte
                 ((SelectFolderActivity) context).refreshConfirmButtonState();
             }
         });
+
         //监听器
         holder.parent.setOnClickListener(new View.OnClickListener() {
             @Override

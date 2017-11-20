@@ -42,7 +42,7 @@
             android:id="@+id/button_scan_cancel"
             android:textColor="@color/white"
             android:textSize="21sp"
-            android:background="@drawable/layout_for_button_dark"
+            android:background="@drawable/button_background_dark"
             android:text="@string/stop"
             android:layout_marginTop="@dimen/small_border"
             android:layout_width="256dp"

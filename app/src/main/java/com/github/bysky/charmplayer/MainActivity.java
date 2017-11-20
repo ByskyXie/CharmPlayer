@@ -2,6 +2,7 @@ package com.github.bysky.charmplayer;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.transition.Transition;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,7 +17,7 @@ import android.widget.Toast;
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener,View.OnClickListener {
 
-    private Button button_localMusic,button_scan,button_fond,button_musicList;
+    private Button buttonLocalMusic,buttonScan,buttonFond,buttonMusicList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +41,10 @@ public class MainActivity extends BaseActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         //
-        button_localMusic = (Button) findViewById(R.id.button_entrance_local_music);    button_localMusic.setOnClickListener(this);
-        button_musicList = (Button)findViewById(R.id.button_entrance_music_list);       button_musicList.setOnClickListener(this);
-        button_scan = (Button)findViewById(R.id.button_entrance_scan);                  button_scan.setOnClickListener(this);
-        button_fond = (Button)findViewById(R.id.button_entrance_i_fond);                button_fond.setOnClickListener(this);
+        buttonLocalMusic = (Button) findViewById(R.id.button_entrance_local_music);    buttonLocalMusic.setOnClickListener(this);
+        buttonMusicList = (Button)findViewById(R.id.button_entrance_music_list);       buttonMusicList.setOnClickListener(this);
+        buttonScan = (Button)findViewById(R.id.button_entrance_scan);                  buttonScan.setOnClickListener(this);
+        buttonFond = (Button)findViewById(R.id.button_entrance_i_fond);                buttonFond.setOnClickListener(this);
     }
 
     @Override

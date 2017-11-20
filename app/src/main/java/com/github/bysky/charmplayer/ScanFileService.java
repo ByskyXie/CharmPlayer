@@ -92,15 +92,11 @@ public class ScanFileService extends Service
 
     @Override
     public void run() {
-        File file;
         arry_music_file = new ArrayList<File>();
-        for(String s:arry_selected_path){
-            if(!isAllowScan()){
-                Log.w("ScanFileService","run()-> Scan has canceled !");
-                return;
-            }
-            file = new File(s);
-            loopFileTree(arry_music_file,new File[]{file},1 );
+        for(String path:arry_selected_path){
+            if(!isAllowScan())
+                break;
+            loopFileTree(arry_music_file,new File[]{new File(path)},1 );
         }
         //查询入库
         updateDatabase(arry_music_file);
@@ -113,14 +109,6 @@ public class ScanFileService extends Service
             message.what = handler.SCAN_STOP;
         handler.sendMessage(message);
     }
-
-//    private void hintFinished(){
-//        Looper.prepare();
-//        Toast.makeText(getApplicationContext(),"扫描完成",Toast.LENGTH_SHORT).show();
-//        Looper.loop();
-//        //TODO:取消扫描按钮enAble（false） 由于是线程不安全的需要用到异步
-//
-//    }
 
     private void loopFileTree(ArrayList<File> pathList, File[] fileTree, int treeDepth){
         if(treeDepth > maxDepth || !isAllowScan())//不允许继续搜索
