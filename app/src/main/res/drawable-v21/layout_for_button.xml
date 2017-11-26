@@ -1,5 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="#FF9E9E9E">
-    <item android:drawable="@drawable/layout_for_button_basic"/>
+    android:color="#9FAFAFAF">
+    <item>
+        <shape>
+
+            <solid android:color="#FFFFFF" />
+
+            <stroke
+                android:width="0.05dp"
+                android:color="#DFDFDF" />
+
+            <padding
+                android:bottom="2dp"
+                android:left="2dp"
+                android:right="2dp"
+                android:top="2dp" />
+            <corners
+                android:bottomLeftRadius="4dp"
+                android:bottomRightRadius="4dp"
+                android:topLeftRadius="4dp"
+                android:topRightRadius="4dp" />
+
+        </shape>
+    </item>
 </ripple>

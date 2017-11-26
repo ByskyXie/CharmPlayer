@@ -51,7 +51,7 @@ public class SelectFolderAdapter extends RecyclerView.Adapter<SelectFolderAdapte
     }
 
     @Override
-    public void onBindViewHolder(FolderItemHolder holder, final int position) {
+    public void onBindViewHolder(final FolderItemHolder holder, final int position) {
         String dir = list.get(position);
         final String preDir = ((SelectFolderActivity)context).getPreDir();
         File file = new File(preDir+"/"+dir);
@@ -80,7 +80,7 @@ public class SelectFolderAdapter extends RecyclerView.Adapter<SelectFolderAdapte
         holder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClick(context,preDir+"/"+list.get(position));
+                listener.onClick(context,preDir+"/" + list.get(holder.getAdapterPosition()));
             }
         });
         //改变logo长宽+改变控件宽度

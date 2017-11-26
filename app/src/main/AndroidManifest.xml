@@ -16,6 +16,7 @@
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -37,14 +38,17 @@
         <activity android:name=".SelectFolderActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ScanMusicActivity"/>
+                android:value=".ScanMusicActivity" />
         </activity>
 
         <service
             android:name=".ScanFileService"
             android:enabled="true"
-            android:exported="false">
-        </service>
+            android:exported="false"></service>
+        <service
+            android:name=".BroadcastService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

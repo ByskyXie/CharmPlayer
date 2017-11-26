@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Environment;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -47,6 +48,7 @@ public class SelectFolderActivity extends BaseActivity
         SelectFolderAdapter adapter = new SelectFolderAdapter(this,dirList,listener,llm);
         recyclerSelect.setLayoutManager(llm);
         recyclerSelect.setAdapter(adapter);
+        recyclerSelect.addItemDecoration(new DividerItemDecoration(this,LinearLayout.VERTICAL));
     }
 
     @Override

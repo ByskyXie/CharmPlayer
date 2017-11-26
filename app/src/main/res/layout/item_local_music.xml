@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/layout_for_button"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/item_local_music_layout_add"
+        android:layout_weight="0"
+        android:background="@drawable/button_no_border_light"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/item_local_music_add"
+            android:contentDescription="添加"
+            android:layout_marginLeft="@dimen/small_border"
+            android:layout_marginRight="@dimen/mini_border"
+            android:background="@drawable/ic_add"
+            android:backgroundTint="@color/iconGray"
+            android:layout_gravity="center_vertical"
+            android:clickable="false"
+            android:focusable="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <View
+        android:layout_marginLeft="@dimen/mini_border"
+        android:layout_marginRight="@dimen/mini_border"
+        android:layout_marginTop="@dimen/small_border"
+        android:layout_marginBottom="@dimen/small_border"
+        android:background="@color/gray"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"/>
+
+    <LinearLayout
+        android:id="@+id/item_local_music_layout_play"
+        android:orientation="vertical"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/button_no_border_light"
+        android:focusable="true"
+        android:clickable="true"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/item_local_music_name"
+            android:maxLines="1"
+            android:textSize="18sp"
+            android:focusable="false"
+            android:clickable="false"
+            android:layout_marginLeft="@dimen/small_border"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/item_local_music_artist"
+            android:maxLines="1"
+            android:textSize="14sp"
+            android:focusable="false"
+            android:clickable="false"
+            android:layout_marginLeft="@dimen/small_border"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <View
+        android:layout_marginLeft="@dimen/mini_border"
+        android:layout_marginRight="@dimen/mini_border"
+        android:layout_marginTop="@dimen/small_border"
+        android:layout_marginBottom="@dimen/small_border"
+        android:background="@color/gray"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"/>
+
+    <LinearLayout
+        android:id="@+id/item_local_music_layout_more"
+        android:layout_weight="0"
+        android:background="@drawable/button_no_border_light"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/item_local_music_more"
+            android:contentDescription="更多"
+            android:layout_marginLeft="@dimen/mini_border"
+            android:layout_marginRight="@dimen/small_border"
+            android:background="@drawable/ic_more"
+            android:backgroundTint="@color/iconGray"
+            android:layout_gravity="center_vertical"
+            android:clickable="false"
+            android:focusable="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</LinearLayout>

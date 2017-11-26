@@ -19,7 +19,7 @@ import java.io.File;
 public class BaseActivity extends AppCompatActivity {
     protected Button play_pause,back_music,next_music;
     protected static SQLiteDatabase musicSQLiteDatabases;//TODO:后期需要将转换为private
-    protected static MusicDatabaseOpenHelper musicDatabaseOpenHelper=null;
+    protected static MusicDatabaseOpenHelper musicDatabaseOpenHelper;
     
     public SQLiteDatabase getMusicSQLiteDatabases(){ return musicSQLiteDatabases;}
     public MusicDatabaseOpenHelper getMusicDatabaseOpenHelper(){ return musicDatabaseOpenHelper;}
@@ -37,7 +37,7 @@ public class BaseActivity extends AppCompatActivity {
     }
     private void checkMusicFile(){
         //TODO:可能因无权限而闪退
-        Cursor all_music = musicSQLiteDatabases.query("MUSIC",new String[]{"FILE_PATH"},null,null,null,null,null);
+        Cursor all_music = getSavedMusicList();
         if(!all_music.moveToFirst())
             return;
         //不为空则为真能移至顶部
@@ -52,6 +52,12 @@ public class BaseActivity extends AppCompatActivity {
             }
         }while(all_music.moveToNext());
     }
+
+    public Cursor getSavedMusicList(){
+        return musicSQLiteDatabases.query("MUSIC",new String[]{"FILE_PATH","FILE_NAME","FILE_FOLDER","MUSIC_NAME","ARTIST"}
+            ,null, null,null,null,null);
+    }
+
     protected void initialUI(){}
 
     protected void setButtonUnable(Button button){
