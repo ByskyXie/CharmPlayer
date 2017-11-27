@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public class SelectFolderActivity extends BaseActivity
             implements View.OnClickListener{
-    private int onCheckedNumber;
+
     private Toolbar toolbar;
     private String preDir;
     private String rootDir;
@@ -31,6 +31,7 @@ public class SelectFolderActivity extends BaseActivity
     private RecyclerView recyclerSelect;
     private TextView textViewShowPath;
     private Button buttonConfirm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +67,7 @@ public class SelectFolderActivity extends BaseActivity
         //子项目点击监听器
         listener = new SelectFolderAdapter.OnItemClickListener() {
             @Override
-            public void onClick(Context context,String path) {
+            public void onClick(Context context,String path,SelectFolderAdapter adapter) {
                 SelectFolderActivity activity = (SelectFolderActivity)context;
                 RecyclerView recycler = activity.recyclerSelect;
 
@@ -76,7 +77,6 @@ public class SelectFolderActivity extends BaseActivity
 
                 //重新设置已选中的目录数并将check标记置空
                 cancelSelectedMarks(recycler.getLayoutManager());
-                onCheckedNumber = 0;
 
                 //改变根目录
                 activity.setPreDir(path);
@@ -87,8 +87,8 @@ public class SelectFolderActivity extends BaseActivity
                 recycler.getAdapter().notifyDataSetChanged();
             }
         };
-        recyclerSelect = (RecyclerView) findViewById(R.id.recycler_select_folder);
-        textViewShowPath = (TextView)findViewById(R.id.text_view_show_path);
+        recyclerSelect = findViewById(R.id.recycler_select_folder);
+        textViewShowPath = findViewById(R.id.text_view_show_path);
         //TODO：当选中了目录才能点确定扫描
     }
 
@@ -98,13 +98,14 @@ public class SelectFolderActivity extends BaseActivity
             case R.id.text_view_show_path:
                 String path = textViewShowPath.getText().toString()
                         .substring(0, textViewShowPath.getText().toString().lastIndexOf('/'));
-                listener.onClick(this, path);
+                listener.onClick(this, path,(SelectFolderAdapter) recyclerSelect.getAdapter());
                 break;
             case R.id.button_select_folder_confirm:
                 //启动扫描服务
                 Intent intent = new Intent(this,ScanFileForMusicActivity.class);
                 //设置最小文件大小
-                intent.putStringArrayListExtra("scanList",getSelectedFolder());
+                intent.putStringArrayListExtra("scanList"
+                        ,getSelectedFolder((SelectFolderAdapter) recyclerSelect.getAdapter()));
                 //设置搜索深度
                 if(((CheckBox)findViewById(R.id.checkbox_deep_scan)).isChecked())
                     intent.putExtra("maxFolderDepth",0xfffffff);//TODO:0xfffffff近似全局扫描
@@ -119,15 +120,14 @@ public class SelectFolderActivity extends BaseActivity
     /**
      * 获取已选择的目录
      * */
-    protected ArrayList<String> getSelectedFolder(){
+    protected ArrayList<String> getSelectedFolder(SelectFolderAdapter adapter){
         ArrayList<String> selectedList = new ArrayList<String>();
-        RecyclerView.LayoutManager layoutManager = recyclerSelect.getLayoutManager();
-        int childCount = layoutManager.getChildCount();
-        for(int i=0 ;i<childCount ;i++){
-            View view =  layoutManager.getChildAt(i);
-            if(!((CheckBox)view.findViewById(R.id.checkBox_item_select_folder)).isChecked())
-                continue;
-            selectedList.add(preDir+"/"+((TextView)view.findViewById(R.id.text_view_item_select_folder)).getText());
+//        由于控件复用的原因，不可用chileCount用来定位元素个数
+        ArrayList<String> pathList = adapter.getList();
+        boolean[] itemArray = adapter.getIsCheckedArray();
+        for(int i=0;i<itemArray.length;i++){
+            if(itemArray[i])
+                selectedList.add(preDir+"/"+pathList.get(i));
         }
         return selectedList;
     }
@@ -166,8 +166,8 @@ public class SelectFolderActivity extends BaseActivity
         return list;
     }
 
-    public void refreshConfirmButtonState(){
-        if(onCheckedNumber>0)
+    public void refreshConfirmButtonState(boolean haveSelectedItems){
+        if(haveSelectedItems)
             setButtonEnable(buttonConfirm);
         else
             setButtonUnable(buttonConfirm);
@@ -185,18 +185,9 @@ public class SelectFolderActivity extends BaseActivity
     public void setPreDir(String dir){
         preDir = dir;
     }
-
-    public int getOnCheckedNumber() {
-        return onCheckedNumber;
-    }
-    public void setOnCheckedNumber(int onCheckedNumber) {
-        this.onCheckedNumber = onCheckedNumber;
-    }
-
     public SelectFolderAdapter.OnItemClickListener getListener() {
         return listener;
     }
-
     public String getRootDir() {
         return rootDir;
     }

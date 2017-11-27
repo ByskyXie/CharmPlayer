@@ -103,10 +103,10 @@ public class ScanFileService extends Service
         //返回结果
         Message message = new Message();
         if(isAllowScan()){
-            message.what = handler.SCAN_FINISH;
+            message.what = ScanFileForMusicActivity.ScanHandler.SCAN_FINISH;
             Log.w("ScanFileService","run()-> Scan has finished !");
         }else
-            message.what = handler.SCAN_STOP;
+            message.what = ScanFileForMusicActivity.ScanHandler.SCAN_STOP;
         handler.sendMessage(message);
     }
 
@@ -168,6 +168,10 @@ public class ScanFileService extends Service
                         music_name = new String(music_name.substring(0,30).getBytes("ISO-8859-1") , "GBK"); //歌曲名
                     else if(music_name.length()<=30)
                         music_name = new String(music_name.getBytes("ISO-8859-1") , "GBK");
+                    //是否符合GBK编码
+//                    if(!isEncodeGBK(music_name))
+//                        music_name=" ";
+
                     //接下来是歌手(同上)
                     randaf.seek(file.length()-95);
                     artist = randaf.readLine();
@@ -178,6 +182,9 @@ public class ScanFileService extends Service
                         artist = new String(artist.substring(0,30).getBytes("ISO-8859-1"),"GBK");
                     else if(artist.length()<=30)
                         artist = new String( artist.getBytes("ISO-8859-1") ,"GBK" );
+                    //是否符合GBK编码
+//                    if(!isEncodeGBK(artist))
+//                        artist = " ";
                 }
                 //放入信息集
                 contentValues.clear();
@@ -195,6 +202,13 @@ public class ScanFileService extends Service
                 Log.e(".ScanFileService","insert to database case read file failed\n"+ioe);
             }
         }
+    }
+    private boolean isEncodeGBK(String s){
+        byte[] b = s.getBytes();
+        int a = b[0]*0x100+b[1];
+        if( a>=0x8140 && a<=0xFEFE && b[1]!=0x7F)
+            return true;
+        return false;
     }
     /**
      * 设置最小扫描文件

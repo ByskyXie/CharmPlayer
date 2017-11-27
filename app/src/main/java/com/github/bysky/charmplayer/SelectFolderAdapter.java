@@ -10,6 +10,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -23,6 +25,8 @@ public class SelectFolderAdapter extends RecyclerView.Adapter<SelectFolderAdapte
     private ArrayList<String> list;
     private RecyclerView.LayoutManager llm;
     private OnItemClickListener listener;
+    private boolean[] isCheckedArray;
+    private int onCheckedCount;
 
     static class FolderItemHolder extends RecyclerView.ViewHolder{
         private CheckBox checkBox;
@@ -44,10 +48,10 @@ public class SelectFolderAdapter extends RecyclerView.Adapter<SelectFolderAdapte
         this.list = dirList;
         this.context = context;
         this.listener = listener;
-    }
-
-    public void setList(ArrayList<String> list) {
-        this.list = list;
+        isCheckedArray = new boolean[dirList.size()];
+        onCheckedCount = 0;
+        for(int i =0;i<isCheckedArray.length;i++)
+            isCheckedArray[i] = false;
     }
 
     @Override
@@ -64,15 +68,28 @@ public class SelectFolderAdapter extends RecyclerView.Adapter<SelectFolderAdapte
 
         //检查选项
         holder.img.setPadding(0,temp,0,temp);
+        if(isCheckedArray[position])
+            holder.checkBox.setChecked(true);
+        else
+            holder.checkBox.setChecked(false);
         holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                int temp = ((SelectFolderActivity) context).getOnCheckedNumber();
-                if(isChecked)
-                    ((SelectFolderActivity) context).setOnCheckedNumber(temp+1);
+                if(isChecked){
+                    if( !isCheckedArray[holder.getAdapterPosition()]){
+                        onCheckedCount++;
+                        isCheckedArray[holder.getAdapterPosition()] = true;
+                    }
+                }else{
+                    if( isCheckedArray[holder.getAdapterPosition()]){
+                        onCheckedCount--;
+                        isCheckedArray[holder.getAdapterPosition()] = false;
+                    }
+                }
+                if(onCheckedCount>0)
+                    ((SelectFolderActivity) context).refreshConfirmButtonState(true);
                 else
-                    ((SelectFolderActivity) context).setOnCheckedNumber(temp-1);
-                ((SelectFolderActivity) context).refreshConfirmButtonState();
+                    ((SelectFolderActivity) context).refreshConfirmButtonState(false);
             }
         });
 
@@ -80,7 +97,8 @@ public class SelectFolderAdapter extends RecyclerView.Adapter<SelectFolderAdapte
         holder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClick(context,preDir+"/" + list.get(holder.getAdapterPosition()));
+                listener.onClick(context,preDir+"/" + list.get(holder.getAdapterPosition())
+                    ,SelectFolderAdapter.this);
             }
         });
         //改变logo长宽+改变控件宽度
@@ -93,8 +111,7 @@ public class SelectFolderAdapter extends RecyclerView.Adapter<SelectFolderAdapte
     public FolderItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context)
                 .inflate(R.layout.item_select_folder,parent,false);
-        FolderItemHolder holder = new FolderItemHolder(view);
-        return holder;
+        return new FolderItemHolder(view);
     }
 
     @Override
@@ -102,7 +119,22 @@ public class SelectFolderAdapter extends RecyclerView.Adapter<SelectFolderAdapte
         return list.size();
     }
 
+    public void setList(ArrayList<String> list) {
+        this.list = list;
+        onCheckedCount = 0;
+        for(int i=0;i<isCheckedArray.length;i++)
+            isCheckedArray[i] = false;
+    }
+
+    public ArrayList<String> getList(){
+        return list;
+    }
+
+    public boolean[] getIsCheckedArray(){
+        return isCheckedArray;
+    }
+
     interface OnItemClickListener{
-        void onClick(Context context,String path);
+        void onClick(Context context,String path,SelectFolderAdapter adapter);
     }
 }
