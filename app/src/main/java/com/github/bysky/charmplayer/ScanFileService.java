@@ -159,7 +159,7 @@ public class ScanFileService extends Service
                     randaf = new RandomAccessFile(file,"r");
                     //读取信息(歌曲信息存放于末尾的128个字节中)
                     randaf.seek(file.length()-125);
-                    //将RandomAccessFile读取出的“ISO-8859-1”编码的文字转换为“UTF-8”
+                    //将RandomAccessFile读取出的“ISO-8859-1”编码的文字转换为“GBK”
                     music_name = randaf.readLine();
                     int temp = music_name.indexOf('\0');
                     if(temp!=-1)
@@ -168,9 +168,6 @@ public class ScanFileService extends Service
                         music_name = new String(music_name.substring(0,30).getBytes("ISO-8859-1") , "GBK"); //歌曲名
                     else if(music_name.length()<=30)
                         music_name = new String(music_name.getBytes("ISO-8859-1") , "GBK");
-                    //是否符合GBK编码
-//                    if(!isEncodeGBK(music_name))
-//                        music_name=" ";
 
                     //接下来是歌手(同上)
                     randaf.seek(file.length()-95);
@@ -182,9 +179,6 @@ public class ScanFileService extends Service
                         artist = new String(artist.substring(0,30).getBytes("ISO-8859-1"),"GBK");
                     else if(artist.length()<=30)
                         artist = new String( artist.getBytes("ISO-8859-1") ,"GBK" );
-                    //是否符合GBK编码
-//                    if(!isEncodeGBK(artist))
-//                        artist = " ";
                 }
                 //放入信息集
                 contentValues.clear();
@@ -202,13 +196,6 @@ public class ScanFileService extends Service
                 Log.e(".ScanFileService","insert to database case read file failed\n"+ioe);
             }
         }
-    }
-    private boolean isEncodeGBK(String s){
-        byte[] b = s.getBytes();
-        int a = b[0]*0x100+b[1];
-        if( a>=0x8140 && a<=0xFEFE && b[1]!=0x7F)
-            return true;
-        return false;
     }
     /**
      * 设置最小扫描文件

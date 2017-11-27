@@ -49,13 +49,23 @@ public class LocalMusicAdapter extends RecyclerView.Adapter<LocalMusicAdapter.Lo
 
     @Override
     public void onBindViewHolder(final LocalMusicHolder holder, final int position) {
-        if(!dbList.moveToPosition(position)){
+        if(!dbList.moveToPosition(holder.getAdapterPosition())){
             Log.e("MusicAdapter","错误的列表位置");
             return;
         }
-        holder.textViewMusicName.setText(dbList.getString(dbList.getColumnIndex("MUSIC_NAME")));
-        holder.textViewMusicArtist.setText(dbList.getString(dbList.getColumnIndex("ARTIST")));
-
+        String fileName = dbList.getString(dbList.getColumnIndex("FILE_NAME"));
+        //通过正则检测是否符合【歌手 - 歌曲名】规范
+        if(fileName.matches(".+[ ]+[-]{1}[ ]+.+")){
+            int temp = fileName.indexOf('-');
+            holder.textViewMusicArtist.setText(fileName.substring(0,temp));
+            //去除多余空格
+            while(fileName.charAt(temp+1)==' ')
+                temp++;
+            holder.textViewMusicName.setText(fileName.substring(temp+1));
+        }else{
+            holder.textViewMusicName.setText(fileName);
+            holder.textViewMusicArtist.setText("未知歌手");
+        }
         //监听器
         holder.layoutPlay.setOnClickListener(new View.OnClickListener() {
             @Override
