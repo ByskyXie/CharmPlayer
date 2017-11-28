@@ -1,6 +1,7 @@
 package com.github.bysky.charmplayer;
 
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -17,9 +18,10 @@ import java.io.File;
  */
 
 public class BaseActivity extends AppCompatActivity {
-    protected Button play_pause,back_music,next_music;
+
     protected static SQLiteDatabase musicSQLiteDatabases;//TODO:后期需要将转换为private
     protected static MusicDatabaseOpenHelper musicDatabaseOpenHelper;
+    private static boolean hasCreateService = false;
     
     public SQLiteDatabase getMusicSQLiteDatabases(){ return musicSQLiteDatabases;}
     public MusicDatabaseOpenHelper getMusicDatabaseOpenHelper(){ return musicDatabaseOpenHelper;}
@@ -34,6 +36,10 @@ public class BaseActivity extends AppCompatActivity {
         }
         //检查音乐文件存在否
         checkMusicFile();
+        if(!hasCreateService){
+            hasCreateService = true;
+            startService(new Intent(this,BroadcastService.class));
+        }
     }
     private void checkMusicFile(){
         //TODO:可能因无权限而闪退

@@ -1,6 +1,7 @@
 package com.github.bysky.charmplayer;
 
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
@@ -27,23 +28,29 @@ public class ScanFileForMusicActivity extends BaseActivity
     private Button buttonCancel;
     private TextView textViewProgress;
     private ImageView imgView;
-    private ScanHandler handler = new ScanHandler();
+    private ScanHandler handler;
 
-    public class ScanHandler extends Handler{
-        public final static int SCAN_FINISH = 1;
-        public final static int SCAN_STOP = 0;
+    public static class ScanHandler extends Handler{
+        final static int SCAN_FINISH = 1;
+        final static int SCAN_STOP = 0;
+        private Context context;
+        private Button controlButton;
 
+        ScanHandler(Context context,Button controlButton){
+            this.context = context;
+            this.controlButton = controlButton;
+        }
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case SCAN_FINISH:
-                    setButtonUnable(buttonCancel);
-                    Toast.makeText(getApplicationContext(),"扫描完成",Toast.LENGTH_SHORT).show();
+                    ((BaseActivity)context).setButtonUnable(controlButton);
+                    Toast.makeText(context.getApplicationContext(),"扫描完成",Toast.LENGTH_SHORT).show();
                     break;
                 case SCAN_STOP:
-                    setButtonUnable(buttonCancel);
-                    buttonCancel.setText("已停止");
-                    Toast.makeText(getApplicationContext(),"扫描已停止",Toast.LENGTH_SHORT).show();
+                    ((BaseActivity)context).setButtonUnable(controlButton);
+                    controlButton.setText("已停止");
+                    Toast.makeText(context.getApplicationContext(),"扫描已停止",Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -53,7 +60,7 @@ public class ScanFileForMusicActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_file_for_music);
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar_scan_file);
+        Toolbar toolbar = findViewById(R.id.toolbar_scan_file);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //初始化界面
@@ -72,14 +79,15 @@ public class ScanFileForMusicActivity extends BaseActivity
 
     @Override
     protected void initialUI() {
-        int width = (int)(0.618*getResources().getDisplayMetrics().widthPixels);
-        textViewProgress = (TextView)findViewById(R.id.text_view_scan_progress);
-        imgView = (ImageView)findViewById(R.id.image_scanning_logo);
-        buttonCancel = (Button)findViewById(R.id.button_scan_cancel);
+        int iconSize = (int)(0.618*getResources().getDisplayMetrics().widthPixels);
+        textViewProgress = findViewById(R.id.text_view_scan_progress);
+        imgView = findViewById(R.id.image_scanning_logo);
+        buttonCancel = findViewById(R.id.button_scan_cancel);
         buttonCancel.setOnClickListener(this);
         //设置宽度
-        imgView.getLayoutParams().width = imgView.getLayoutParams().height = width;
-        buttonCancel.getLayoutParams().width = width;
+        imgView.getLayoutParams().width = imgView.getLayoutParams().height = iconSize;
+        buttonCancel.getLayoutParams().width = iconSize;
+        handler = new ScanHandler(this,buttonCancel);
     }
 
     @Override

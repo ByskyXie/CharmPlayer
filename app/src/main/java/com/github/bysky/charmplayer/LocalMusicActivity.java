@@ -1,6 +1,9 @@
 package com.github.bysky.charmplayer;
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -12,6 +15,7 @@ import android.widget.LinearLayout;
 public class LocalMusicActivity extends BaseActivity {
     private Toolbar toolbar_local;
     private RecyclerView recyclerMusicList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,7 +25,6 @@ public class LocalMusicActivity extends BaseActivity {
         setSupportActionBar(toolbar_local);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initialUI();
-
     }
 
     @Override
