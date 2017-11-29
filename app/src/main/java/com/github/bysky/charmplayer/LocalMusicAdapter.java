@@ -19,6 +19,7 @@ public class LocalMusicAdapter extends RecyclerView.Adapter<LocalMusicAdapter.Lo
     private OnItemClickListener listener;
     private Context context;
     private Cursor dbList;
+    private ArrayList<String> musicList = new ArrayList<String>();
 
     static class LocalMusicHolder extends RecyclerView.ViewHolder{
         TextView textViewMusicName;
@@ -39,6 +40,11 @@ public class LocalMusicAdapter extends RecyclerView.Adapter<LocalMusicAdapter.Lo
         this.context = context;
         this.dbList = dbList;
         this.listener = listener;
+        if(dbList.moveToFirst()){
+            do{
+                musicList.add(dbList.getString(dbList.getColumnIndex("FILE_PATH")));
+            }while (dbList.moveToNext());
+        }
     }
 
     @Override
@@ -70,7 +76,7 @@ public class LocalMusicAdapter extends RecyclerView.Adapter<LocalMusicAdapter.Lo
         holder.layoutPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClick(context,holder.getAdapterPosition());
+                listener.onClick(LocalMusicAdapter.this,holder.getAdapterPosition());
             }
         });
         //设置icon长宽
@@ -89,8 +95,12 @@ public class LocalMusicAdapter extends RecyclerView.Adapter<LocalMusicAdapter.Lo
         return dbList.getCount();
     }
 
+    protected ArrayList<String> getMusicList(){
+        return musicList;
+    }
+
     interface OnItemClickListener{
-        void onClick(Context context,int position);
+        void onClick(LocalMusicAdapter adapter,int position);
     }
 
 }
