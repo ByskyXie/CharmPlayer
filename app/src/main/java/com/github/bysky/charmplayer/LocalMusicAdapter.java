@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import java.util.ArrayList;
 
 /**
@@ -21,7 +22,7 @@ public class LocalMusicAdapter extends RecyclerView.Adapter<LocalMusicAdapter.Lo
     private Cursor dbList;
     private ArrayList<String> musicList = new ArrayList<String>();
 
-    static class LocalMusicHolder extends RecyclerView.ViewHolder{
+    static class LocalMusicHolder extends RecyclerView.ViewHolder {
         TextView textViewMusicName;
         TextView textViewMusicArtist;
         View layoutPlay;
@@ -36,39 +37,39 @@ public class LocalMusicAdapter extends RecyclerView.Adapter<LocalMusicAdapter.Lo
         }
     }
 
-    LocalMusicAdapter(Context context, Cursor dbList, OnItemClickListener listener){
+    LocalMusicAdapter(Context context, Cursor dbList, OnItemClickListener listener) {
         this.context = context;
         this.dbList = dbList;
         this.listener = listener;
-        if(dbList.moveToFirst()){
-            do{
+        if (dbList.moveToFirst()) {
+            do {
                 musicList.add(dbList.getString(dbList.getColumnIndex("FILE_PATH")));
-            }while (dbList.moveToNext());
+            } while (dbList.moveToNext());
         }
     }
 
     @Override
     public LocalMusicHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_local_music,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_local_music, parent, false);
         return new LocalMusicHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final LocalMusicHolder holder, final int position) {
-        if(!dbList.moveToPosition(holder.getAdapterPosition())){
-            Log.e("MusicAdapter","错误的列表位置");
+        if (!dbList.moveToPosition(holder.getAdapterPosition())) {
+            Log.e("MusicAdapter", "错误的列表位置");
             return;
         }
         String fileName = dbList.getString(dbList.getColumnIndex("FILE_NAME"));
         //通过正则检测是否符合【歌手 - 歌曲名】规范
-        if(fileName.matches(".+[ ]+[-]{1}[ ]+.+")){
+        if (fileName.matches(".+[ ]+[-]{1}[ ]+.+")) {
             int temp = fileName.indexOf('-');
-            holder.textViewMusicArtist.setText(fileName.substring(0,temp));
+            holder.textViewMusicArtist.setText(fileName.substring(0, temp));
             //去除多余空格
-            while(fileName.charAt(temp+1)==' ')
+            while (fileName.charAt(temp + 1) == ' ')
                 temp++;
-            holder.textViewMusicName.setText(fileName.substring(temp+1));
-        }else{
+            holder.textViewMusicName.setText(fileName.substring(temp + 1));
+        } else {
             holder.textViewMusicName.setText(fileName);
             holder.textViewMusicArtist.setText("未知歌手");
         }
@@ -76,18 +77,18 @@ public class LocalMusicAdapter extends RecyclerView.Adapter<LocalMusicAdapter.Lo
         holder.layoutPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClick(LocalMusicAdapter.this,holder.getAdapterPosition());
+                listener.onClick(LocalMusicAdapter.this, holder.getAdapterPosition());
             }
         });
         //设置icon长宽
-        int size = (int)(context.getResources().getDisplayMetrics().widthPixels * 1.0 / 13);
+        int size = (int) (context.getResources().getDisplayMetrics().widthPixels * 1.0 / 13);
         ViewGroup.LayoutParams params;
         params = holder.itemView.findViewById(R.id.item_local_music_add).getLayoutParams();
         params.width = params.height = size;
         params = holder.itemView.findViewById(R.id.item_local_music_more).getLayoutParams();
         params.width = params.height = size;
         holder.itemView.getLayoutParams().height =
-                (int)(context.getResources().getDisplayMetrics().heightPixels * 1.0 / 11);
+                (int) (context.getResources().getDisplayMetrics().heightPixels * 1.0 / 11);
     }
 
     @Override
@@ -95,12 +96,12 @@ public class LocalMusicAdapter extends RecyclerView.Adapter<LocalMusicAdapter.Lo
         return dbList.getCount();
     }
 
-    protected ArrayList<String> getMusicList(){
+    protected ArrayList<String> getMusicList() {
         return musicList;
     }
 
-    interface OnItemClickListener{
-        void onClick(LocalMusicAdapter adapter,int position);
+    interface OnItemClickListener {
+        void onClick(LocalMusicAdapter adapter, int position);
     }
 
 }
