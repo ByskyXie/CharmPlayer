@@ -12,19 +12,17 @@ import android.util.Log;
 import android.widget.Button;
 
 import java.io.File;
+import java.io.Serializable;
 
 /**
  * Created by asus on 2017/10/18.
  */
 
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends AppCompatActivity{
 
     protected static SQLiteDatabase musicSQLiteDatabases;//TODO:后期需要将转换为private
     protected static MusicDatabaseOpenHelper musicDatabaseOpenHelper;
     private static boolean hasCreateService = false;
-    
-    public SQLiteDatabase getMusicSQLiteDatabases(){ return musicSQLiteDatabases;}
-    public MusicDatabaseOpenHelper getMusicDatabaseOpenHelper(){ return musicDatabaseOpenHelper;}
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,6 +39,7 @@ public class BaseActivity extends AppCompatActivity {
             startService(new Intent(this,BroadcastService.class));
         }
     }
+
     private void checkMusicFile(){
         //TODO:可能因无权限而闪退
         Cursor all_music = getSavedMusicList();

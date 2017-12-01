@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bottom_nav_bar"
     android:orientation="vertical"
     android:clickable="true"
     android:focusable="true"
@@ -47,7 +48,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/button_control_back"
+            android:id="@+id/button_control_pre"
             android:layout_margin="@dimen/mini_border"
             android:layout_gravity="center"
             android:background="@drawable/ic_pre_music"
