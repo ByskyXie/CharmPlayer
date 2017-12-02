@@ -1,76 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/bottom_nav_bar"
-    android:orientation="vertical"
-    android:clickable="true"
-    android:focusable="true"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_gravity="bottom"
     android:background="@drawable/layout_for_playing_nav"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="vertical">
 
     <ProgressBar
         android:id="@+id/progress_bar_play"
-        android:paddingLeft="@dimen/mini_border"
-        android:paddingRight="@dimen/mini_border"
-        android:clickable="false"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:paddingLeft="@dimen/mini_border"
+        android:paddingRight="@dimen/mini_border" />
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="end"
         android:paddingLeft="@dimen/mini_border"
-        android:paddingRight="@dimen/mini_border"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:paddingRight="@dimen/mini_border">
+
         <LinearLayout
-            android:layout_weight="5"
             android:layout_width="0dp"
-            android:layout_gravity="center_vertical"
-            android:orientation="vertical"
-            android:layout_height="@dimen/icon_size_normal">
+            android:layout_height="@dimen/icon_size_normal"
+            android:layout_weight="5"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/text_view_music_name"
-                android:textColor="#292421"
-                android:gravity="start"
-                android:textSize="20sp"
-                android:text="@string/default_music_title"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/default_music_title"
+                android:textColor="@color/elephantBlack"
+                android:textSize="20sp" />
+
             <TextView
                 android:id="@+id/text_view_music_lrc"
-                android:text="@string/default_music_lrc"
-                android:textSize="14sp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/default_music_lrc"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <Button
             android:id="@+id/button_control_pre"
-            android:layout_margin="@dimen/mini_border"
-            android:layout_gravity="center"
-            android:background="@drawable/ic_pre_music"
-            android:layout_weight="0"
             android:layout_width="@dimen/icon_size_small"
-            android:layout_height="@dimen/icon_size_small" />
+            android:layout_height="@dimen/icon_size_small"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/mini_border"
+            android:layout_weight="0"
+            android:background="@drawable/ic_pre_music" />
+
         <Button
             android:id="@+id/button_control_play"
-            android:layout_margin="@dimen/mini_border"
-            android:layout_gravity="center"
-            android:background="@drawable/ic_play"
             android:layout_width="48dp"
+            android:layout_height="@dimen/icon_size_normal"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/mini_border"
             android:layout_weight="0"
-            android:layout_height="@dimen/icon_size_normal" />
+            android:background="@drawable/ic_play" />
+
         <Button
             android:id="@+id/button_control_next"
-            android:layout_margin="@dimen/mini_border"
-            android:layout_gravity="center"
-            android:background="@drawable/ic_next_music"
-            android:layout_weight="0"
             android:layout_width="@dimen/icon_size_small"
-            android:layout_height="@dimen/icon_size_small" />
+            android:layout_height="@dimen/icon_size_small"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/mini_border"
+            android:layout_weight="0"
+            android:background="@drawable/ic_next_music" />
     </LinearLayout>
 
 </LinearLayout>

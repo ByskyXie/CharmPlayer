@@ -63,25 +63,35 @@ public class LocalMusicActivity extends NavBarActivity
     @Override
     public void onClick(View v) {
         Intent intent = new Intent("com.github.bysky.charmplayer.MUSIC_BROADCAST_INSTRUCTION");
-        Bundle bundle;
 
-        //话不多说，等待事件完成后才能继续点击
-        v.setEnabled(false);
-        //传递消息
         switch (v.getId()) {
             case R.id.button_control_play:
-                //调用服务
+                if(super.getPlayState() == BroadcastService.NONE_MUSIC)
+                    break;
+                //等待事件完成后才能继续点击
+                v.setEnabled(false);
                 if(super.getPlayState() == BroadcastService.PAUSE_MUSIC)
                     intent.putExtra("OPERATION", BroadcastService.PLAY_MUSIC);
                 else
                     intent.putExtra("OPERATION", BroadcastService.PAUSE_MUSIC);
                 sendBroadcast(intent);
                 break;
-            case R.id.button_control_pre:
 
+            case R.id.button_control_pre:
+                if(super.getPlayState() == BroadcastService.NONE_MUSIC)
+                    break;
+                //等待事件完成后才能继续点击
+                v.setEnabled(false);
+                intent.putExtra("OPERATION", BroadcastService.PREVIOUS_MUSIC);
+                sendBroadcast(intent);
                 break;
             case R.id.button_control_next:
-
+                if(super.getPlayState() == BroadcastService.NONE_MUSIC)
+                    break;
+                //等待事件完成后才能继续点击
+                v.setEnabled(false);
+                intent.putExtra("OPERATION", BroadcastService.NEXT_MUSIC);
+                sendBroadcast(intent);
                 break;
         }
     }

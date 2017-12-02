@@ -20,7 +20,7 @@ public class LocalMusicAdapter extends RecyclerView.Adapter<LocalMusicAdapter.Lo
     private OnItemClickListener listener;
     private Context context;
     private Cursor dbList;
-    private ArrayList<String> musicList = new ArrayList<String>();
+    private ArrayList<Music> musicList = new ArrayList<Music>();
 
     static class LocalMusicHolder extends RecyclerView.ViewHolder {
         TextView textViewMusicName;
@@ -41,9 +41,15 @@ public class LocalMusicAdapter extends RecyclerView.Adapter<LocalMusicAdapter.Lo
         this.context = context;
         this.dbList = dbList;
         this.listener = listener;
+        String fileFolder,musicName,filePath,fileName,artist;
         if (dbList.moveToFirst()) {
             do {
-                musicList.add(dbList.getString(dbList.getColumnIndex("FILE_PATH")));
+                filePath = dbList.getString(dbList.getColumnIndex("FILE_PATH"));
+                fileName = dbList.getString(dbList.getColumnIndex("FILE_NAME"));
+                fileFolder = dbList.getString(dbList.getColumnIndex("FILE_FOLDER"));
+                musicName = dbList.getString(dbList.getColumnIndex("MUSIC_NAME"));
+                artist = dbList.getString(dbList.getColumnIndex("ARTIST"));
+                musicList.add(new Music(filePath,fileName,fileFolder,musicName,artist));
             } while (dbList.moveToNext());
         }
     }
@@ -56,11 +62,11 @@ public class LocalMusicAdapter extends RecyclerView.Adapter<LocalMusicAdapter.Lo
 
     @Override
     public void onBindViewHolder(final LocalMusicHolder holder, final int position) {
-        if (!dbList.moveToPosition(holder.getAdapterPosition())) {
+        if (musicList.size() <= holder.getAdapterPosition()) {
             Log.e("MusicAdapter", "错误的列表位置");
             return;
         }
-        String fileName = dbList.getString(dbList.getColumnIndex("FILE_NAME"));
+        String fileName = musicList.get(holder.getAdapterPosition()).getFileName();
         //通过正则检测是否符合【歌手 - 歌曲名】规范
         if (fileName.matches(".+[ ]+[-]{1}[ ]+.+")) {
             int temp = fileName.indexOf('-');
@@ -96,7 +102,7 @@ public class LocalMusicAdapter extends RecyclerView.Adapter<LocalMusicAdapter.Lo
         return dbList.getCount();
     }
 
-    protected ArrayList<String> getMusicList() {
+    protected ArrayList<Music> getMusicList() {
         return musicList;
     }
 

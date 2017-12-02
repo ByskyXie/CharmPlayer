@@ -1,10 +1,12 @@
 package com.github.bysky.charmplayer;
 
+import java.io.Serializable;
+
 /**
  * Created by asus on 2017/11/26.
  */
 
-public class Music {
+public class Music implements Serializable{
     private String musicName;
     private String filePath;
     private String fileFolder;
@@ -13,7 +15,7 @@ public class Music {
     Music(String filePath,String fileName,String fileFolder,String musicName,String artist){
         this.fileFolder = fileFolder;
         this.filePath = filePath;
-        this.fileFolder = fileFolder;
+        this.fileName = fileName;
         this.musicName = musicName;
         this.artist = artist;
     }

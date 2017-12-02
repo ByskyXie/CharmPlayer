@@ -24,6 +24,7 @@ public class BroadcastService extends Service implements Runnable {
     final static int NEXT_MUSIC = 10;
     final static int PREVIOUS_MUSIC = 11;
     final static int CHANGE_PLAY_MODE = 12;
+    final static int GET_PLAY_STATE = 13;
     //
     final static int SET_BROADCAST_LIST = 100;
     final static int ADD_LIST_ITEM = 101;
@@ -36,7 +37,7 @@ public class BroadcastService extends Service implements Runnable {
     private int playMode = PLAY_MODE_ORDER;
     private int playState = NONE_MUSIC;
     private MediaPlayer mediaPlayer;
-    private ArrayList<String> broadcastList;
+    private ArrayList<Music> broadcastList;
     private MusicBroadcastInstructionReceiver receiver = new MusicBroadcastInstructionReceiver(this);
     private IntentFilter filter;
     private Thread thread;
@@ -138,7 +139,7 @@ public class BroadcastService extends Service implements Runnable {
 
     private void analyseInstruction() throws IOException {
         int operation = instruction.getIntExtra("OPERATION", -1);
-        Message msg = new Message();
+        Intent intent;
         switch (operation) {
             case BroadcastService.PLAY_MUSIC:
                 //发送信息的事，该方法内部做了
@@ -146,19 +147,25 @@ public class BroadcastService extends Service implements Runnable {
                 break;
 
             case BroadcastService.PAUSE_MUSIC:
-                //发送信息的事，该方法内部做了
                 pauseMusic();
                 break;
 
             case BroadcastService.NEXT_MUSIC:
                 moveToNextPlayPosition();
                 playMusic(broadcastList.get(playPosition));
+                intent = new Intent("com.github.bysky.charmplayer.MUSIC_BROADCAST_STATE");
+                intent.putExtra("PLAY_STATE",playState);
+                intent.putExtra("TARGET_VIEW",NavBarActivity.BUTTON_NEXT);
+                sendBroadcast(intent);
                 break;
 
             case BroadcastService.PREVIOUS_MUSIC:
                 moveToPreviousPlayPosition();
                 playMusic(broadcastList.get(playPosition));
-                //TODO：要额外将pre使能了啊
+                intent = new Intent("com.github.bysky.charmplayer.MUSIC_BROADCAST_STATE");
+                intent.putExtra("PLAY_STATE",playState);
+                intent.putExtra("TARGET_VIEW",NavBarActivity.BUTTON_PRE);
+                sendBroadcast(intent);
                 break;
 
             case BroadcastService.CHANGE_PLAY_MODE:
@@ -166,7 +173,7 @@ public class BroadcastService extends Service implements Runnable {
                 break;
 
             case BroadcastService.SET_BROADCAST_LIST:
-                ArrayList<String> list = instruction.getStringArrayListExtra("BROADCAST_LIST");
+                ArrayList<Music> list = (ArrayList<Music>) instruction.getSerializableExtra("BROADCAST_LIST");
                 playPosition = instruction.getIntExtra("POSITION", 0);
                 broadcastList = list;
                 //发送信息的事，该方法内部做了
@@ -179,6 +186,12 @@ public class BroadcastService extends Service implements Runnable {
                 break;
             case CLEAR_BROADCAST_LIST:
 
+                break;
+            case GET_PLAY_STATE:
+                intent = new Intent("com.github.bysky.charmplayer.MUSIC_BROADCAST_STATE");
+                intent.putExtra("PLAY_STATE",playState);
+                intent.putExtra("TARGET_VIEW",NavBarActivity.BUTTON_PLAY);
+                sendBroadcast(intent);
                 break;
         }
         //用完的指令还有什么用，烧了(╯≥▽≤)╯~ ┴—┴
@@ -197,9 +210,9 @@ public class BroadcastService extends Service implements Runnable {
         sendBroadcast(intent);
     }
 
-    private void playMusic(String filePath) throws IOException {
+    private void playMusic(Music music) throws IOException {
         mediaPlayer.reset();
-        mediaPlayer.setDataSource(filePath);
+        mediaPlayer.setDataSource(music.getFilePath());
         mediaPlayer.prepare();
         mediaPlayer.start();
         playState = PLAY_MUSIC;
@@ -207,6 +220,16 @@ public class BroadcastService extends Service implements Runnable {
         Intent intent = new Intent("com.github.bysky.charmplayer.MUSIC_BROADCAST_STATE");
         intent.putExtra("PLAY_STATE",playState);
         intent.putExtra("TARGET_VIEW",NavBarActivity.BUTTON_PLAY);
+        //改变
+        String fileName = music.getFileName();
+        if (fileName.matches(".+[ ]+[-]{1}[ ]+.+")) {
+            int temp = fileName.indexOf('-');
+            while (fileName.charAt(temp + 1) == ' ')
+                temp++;
+            intent.putExtra("TITLE",fileName.substring(temp+1));
+        } else {
+            intent.putExtra("TITLE",fileName);
+        }
         sendBroadcast(intent);
     }
 
