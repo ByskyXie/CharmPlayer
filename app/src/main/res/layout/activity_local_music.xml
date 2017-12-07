@@ -6,30 +6,33 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.github.bysky.charmplayer.LocalMusicActivity">
+
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="8dp">
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="0dp">
+
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar_local"
-            android:theme="@style/RedPopupOverlay"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:theme="@style/RedPopupOverlay"
+            app:layout_scrollFlags="scroll|enterAlways|snap" />
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_local_music"
-        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="0dp"/>
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
     <LinearLayout
-        android:layout_weight="0"
-        android:layout_gravity="bottom"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <include
-            layout="@layout/playing_button_nav"/>
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_weight="0">
+
+        <include layout="@layout/playing_button_nav" />
     </LinearLayout>
 </LinearLayout>

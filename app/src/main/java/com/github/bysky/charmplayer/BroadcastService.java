@@ -1,19 +1,27 @@
 package com.github.bysky.charmplayer;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.Message;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.RemoteViews;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+
+import static android.app.Notification.FLAG_ONGOING_EVENT;
 
 public class BroadcastService extends Service implements Runnable {
 
@@ -33,6 +41,7 @@ public class BroadcastService extends Service implements Runnable {
     final static int PLAY_MODE_ORDER = 1000;
     final static int PLAY_MODE_REPEAT = 1001;
     final static int PLAY_MODE_RANDOM = 1002;
+    final static String NOTIFICATION = "NOTIFICATION_BROADCAST_SERVICE";
 
     private int playMode = PLAY_MODE_ORDER;
     private int playState = NONE_MUSIC;
@@ -68,6 +77,18 @@ public class BroadcastService extends Service implements Runnable {
 
     @Override
     public void run() {
+        RemoteViews remoteViews = new RemoteViews(getPackageName(),R.layout.notification_music);
+
+        NotificationManager notiManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification noti = new NotificationCompat.Builder(BroadcastService.this, NOTIFICATION)
+                .setContent(remoteViews)
+                .setSmallIcon(R.drawable.icon_charm)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.icon_charm))
+                .setWhen(System.currentTimeMillis())
+                .build();
+        //设为常驻通知栏
+        noti.flags = FLAG_ONGOING_EVENT;
+        notiManager.notify(noti.hashCode(),noti);
         while (true) {
             //循环运行直到程序停止并退出 //TODO:会出现播放文件被删除的情况
             try {

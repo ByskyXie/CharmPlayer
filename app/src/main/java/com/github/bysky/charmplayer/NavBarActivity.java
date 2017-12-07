@@ -66,7 +66,7 @@ public class NavBarActivity extends BaseActivity {
 
                     break;
                 case PROGRESS_BAR:
-
+                    //重写Drawable中的setLevel方法
                     break;
             }
         }

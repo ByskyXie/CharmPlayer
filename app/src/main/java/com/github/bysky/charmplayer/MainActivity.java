@@ -18,6 +18,7 @@ public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener,View.OnClickListener {
 
     private Button buttonLocalMusic,buttonScan,buttonFond,buttonMusicList;
+    private NavigationView navView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +39,8 @@ public class MainActivity extends BaseActivity
 
     @Override
     protected void initialUI() {
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        navView = findViewById(R.id.nav_view);
+        navView.setNavigationItemSelectedListener(this);
         //
         buttonLocalMusic = (Button) findViewById(R.id.button_entrance_local_music);    buttonLocalMusic.setOnClickListener(this);
         buttonMusicList = (Button)findViewById(R.id.button_entrance_music_list);       buttonMusicList.setOnClickListener(this);
@@ -104,6 +105,8 @@ public class MainActivity extends BaseActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        //去除选择
+        navView.setCheckedItem(NavigationView.NO_ID);
         int id = item.getItemId();
 
         if (id == R.id.nav_skin) {
