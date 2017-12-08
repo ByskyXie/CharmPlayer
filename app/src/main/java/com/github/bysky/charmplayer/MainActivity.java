@@ -14,7 +14,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class MainActivity extends BaseActivity
+public class MainActivity extends NavBarActivity
         implements NavigationView.OnNavigationItemSelectedListener,View.OnClickListener {
 
     private Button buttonLocalMusic,buttonScan,buttonFond,buttonMusicList;
@@ -24,11 +24,11 @@ public class MainActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
+        Toolbar toolbar =  findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -42,10 +42,10 @@ public class MainActivity extends BaseActivity
         navView = findViewById(R.id.nav_view);
         navView.setNavigationItemSelectedListener(this);
         //
-        buttonLocalMusic = (Button) findViewById(R.id.button_entrance_local_music);    buttonLocalMusic.setOnClickListener(this);
-        buttonMusicList = (Button)findViewById(R.id.button_entrance_music_list);       buttonMusicList.setOnClickListener(this);
-        buttonScan = (Button)findViewById(R.id.button_entrance_scan);                  buttonScan.setOnClickListener(this);
-        buttonFond = (Button)findViewById(R.id.button_entrance_i_fond);                buttonFond.setOnClickListener(this);
+        buttonLocalMusic = findViewById(R.id.button_entrance_local_music);    buttonLocalMusic.setOnClickListener(this);
+        buttonMusicList = findViewById(R.id.button_entrance_music_list);       buttonMusicList.setOnClickListener(this);
+        buttonScan = findViewById(R.id.button_entrance_scan);                  buttonScan.setOnClickListener(this);
+        buttonFond = findViewById(R.id.button_entrance_i_fond);                buttonFond.setOnClickListener(this);
     }
 
     @Override

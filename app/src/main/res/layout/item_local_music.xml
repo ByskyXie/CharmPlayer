@@ -16,8 +16,8 @@
         <ImageView
             android:id="@+id/item_local_music_add"
             android:contentDescription="添加"
-            android:layout_marginLeft="@dimen/small_border"
-            android:layout_marginRight="@dimen/mini_border"
+            android:layout_marginStart="@dimen/small_border"
+            android:layout_marginEnd="@dimen/mini_border"
             android:background="@drawable/ic_add"
             android:backgroundTint="@color/iconGray"
             android:layout_gravity="center_vertical"
@@ -28,8 +28,8 @@
     </LinearLayout>
 
     <View
-        android:layout_marginLeft="@dimen/mini_border"
-        android:layout_marginRight="@dimen/mini_border"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="@dimen/mini_border"
         android:layout_marginTop="@dimen/small_border"
         android:layout_marginBottom="@dimen/small_border"
         android:background="@color/gray"
@@ -53,7 +53,7 @@
             android:textSize="18sp"
             android:focusable="false"
             android:clickable="false"
-            android:layout_marginLeft="@dimen/small_border"
+            android:layout_marginStart="@dimen/small_border"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
@@ -63,14 +63,14 @@
             android:textSize="14sp"
             android:focusable="false"
             android:clickable="false"
-            android:layout_marginLeft="@dimen/small_border"
+            android:layout_marginStart="@dimen/small_border"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
 
     <View
-        android:layout_marginLeft="@dimen/mini_border"
-        android:layout_marginRight="@dimen/mini_border"
+        android:layout_marginStart="@dimen/mini_border"
+        android:layout_marginEnd="0dp"
         android:layout_marginTop="@dimen/small_border"
         android:layout_marginBottom="@dimen/small_border"
         android:background="@color/gray"
@@ -88,8 +88,8 @@
         <ImageView
             android:id="@+id/item_local_music_more"
             android:contentDescription="更多"
-            android:layout_marginLeft="@dimen/mini_border"
-            android:layout_marginRight="@dimen/small_border"
+            android:layout_marginStart="@dimen/mini_border"
+            android:layout_marginEnd="@dimen/small_border"
             android:background="@drawable/ic_more"
             android:backgroundTint="@color/iconGray"
             android:layout_gravity="center_vertical"

@@ -2,6 +2,7 @@ package com.github.bysky.charmplayer;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -16,6 +17,7 @@ import android.os.Message;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -54,6 +56,7 @@ public class BroadcastService extends Service implements Runnable {
     private int playPosition;
     //传入intent 的OPERATION部分相当于指令
     private Intent instruction;
+    private Notification noti;
 
     /**
      * MusicBroadcastReceiver类用于传输控制指令
@@ -78,16 +81,24 @@ public class BroadcastService extends Service implements Runnable {
     @Override
     public void run() {
         RemoteViews remoteViews = new RemoteViews(getPackageName(),R.layout.notification_music);
-
+        Intent intent = new Intent(this,MainActivity.class);
+        PendingIntent pint = PendingIntent.getActivities(this,0,
+                new Intent[]{intent},PendingIntent.FLAG_CANCEL_CURRENT);
+        //准备通知
         NotificationManager notiManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification noti = new NotificationCompat.Builder(BroadcastService.this, NOTIFICATION)
-                .setContent(remoteViews)
-                .setSmallIcon(R.drawable.icon_charm)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.icon_charm))
-                .setWhen(System.currentTimeMillis())
-                .build();
-        //设为常驻通知栏
-        noti.flags = FLAG_ONGOING_EVENT;
+        if(noti == null){
+            noti = new NotificationCompat.Builder(BroadcastService.this, NOTIFICATION)
+                    .setStyle(new NotificationCompat.DecoratedCustomViewStyle())    //自定义视图
+                    .setCustomContentView(remoteViews)  //布局
+                    .setContentIntent(pint) //响应事件
+                    .setSmallIcon(R.drawable.icon_charm)   //不需要小图标
+                    .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.icon_charm))   //图标
+//                .setWhen(System.currentTimeMillis())
+                    .setShowWhen(false)
+                    .build();
+            //设为常驻通知栏
+            noti.flags = FLAG_ONGOING_EVENT;
+        }
         notiManager.notify(noti.hashCode(),noti);
         while (true) {
             //循环运行直到程序停止并退出 //TODO:会出现播放文件被删除的情况
@@ -212,11 +223,35 @@ public class BroadcastService extends Service implements Runnable {
                 intent = new Intent("com.github.bysky.charmplayer.MUSIC_BROADCAST_STATE");
                 intent.putExtra("PLAY_STATE",playState);
                 intent.putExtra("TARGET_VIEW",NavBarActivity.BUTTON_PLAY);
+                //传入歌名
+                if(broadcastList != null){
+                    String[] strings = getArtistAndMusic(broadcastList.get(playPosition));
+                    intent.putExtra("TITLE",strings[1]);
+                    intent.putExtra("ARTIST",strings[0]);
+                    intent.putExtra("MUSIC",broadcastList.get(playPosition));
+                }
                 sendBroadcast(intent);
                 break;
         }
         //用完的指令还有什么用，烧了(╯≥▽≤)╯~ ┴—┴
         instruction = null;
+    }
+
+    private String[] getArtistAndMusic(Music music){
+        String[] strings = new String[2];
+        String fileName = music.getFileName();
+        if (fileName.matches(".+[ ]+[-]{1}[ ]+.+")) {
+            int temp = fileName.indexOf('-');
+            strings[0] = fileName.substring(0, temp);
+            //去除多余空格
+            while (fileName.charAt(temp + 1) == ' ')
+                temp++;
+            strings[1] = fileName.substring(temp + 1);
+        } else {
+            strings[0] =  "未知歌手";
+            strings[1] = fileName;
+        }
+        return strings;
     }
 
     private void playMusic() {
@@ -228,6 +263,9 @@ public class BroadcastService extends Service implements Runnable {
         Intent intent = new Intent("com.github.bysky.charmplayer.MUSIC_BROADCAST_STATE");
         intent.putExtra("PLAY_STATE",playState);
         intent.putExtra("TARGET_VIEW",NavBarActivity.BUTTON_PLAY);
+        String[] strings = getArtistAndMusic(broadcastList.get(playPosition));
+        intent.putExtra("TITLE",strings[1]);
+        intent.putExtra("ARTIST",strings[0]);
         sendBroadcast(intent);
     }
 
@@ -242,15 +280,9 @@ public class BroadcastService extends Service implements Runnable {
         intent.putExtra("PLAY_STATE",playState);
         intent.putExtra("TARGET_VIEW",NavBarActivity.BUTTON_PLAY);
         //改变
-        String fileName = music.getFileName();
-        if (fileName.matches(".+[ ]+[-]{1}[ ]+.+")) {
-            int temp = fileName.indexOf('-');
-            while (fileName.charAt(temp + 1) == ' ')
-                temp++;
-            intent.putExtra("TITLE",fileName.substring(temp+1));
-        } else {
-            intent.putExtra("TITLE",fileName);
-        }
+        String[] strings = getArtistAndMusic(music);
+        intent.putExtra("TITLE",strings[1]);
+        intent.putExtra("ARTIST",strings[0]);
         sendBroadcast(intent);
     }
 
@@ -323,6 +355,8 @@ public class BroadcastService extends Service implements Runnable {
     public void onDestroy() {
         super.onDestroy();
         unregisterReceiver(receiver);
+        if(noti != null)
+            ((NotificationManager)getSystemService(NOTIFICATION_SERVICE)).cancel(noti.hashCode());
     }
 
 }

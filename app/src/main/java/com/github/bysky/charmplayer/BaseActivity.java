@@ -74,4 +74,21 @@ public class BaseActivity extends AppCompatActivity{
         button.setEnabled(true);
         button.setTextColor(Color.WHITE);
     }
+
+    protected String[] getArtistAndMusic(Music music){
+        String[] strings = new String[2];
+        String fileName = music.getFileName();
+        if (fileName.matches(".+[ ]+[-]{1}[ ]+.+")) {
+            int temp = fileName.indexOf('-');
+            strings[0] = fileName.substring(0, temp);
+            //去除多余空格
+            while (fileName.charAt(temp + 1) == ' ')
+                temp++;
+            strings[1] = fileName.substring(temp + 1);
+        } else {
+            strings[0] =  "未知歌手";
+            strings[1] = fileName;
+        }
+        return strings;
+    }
 }

@@ -79,6 +79,8 @@ public class LocalMusicAdapter extends RecyclerView.Adapter<LocalMusicAdapter.Lo
             holder.textViewMusicName.setText(fileName);
             holder.textViewMusicArtist.setText("未知歌手");
         }
+        //TODO:若正在播放则高亮
+
         //监听器
         holder.layoutPlay.setOnClickListener(new View.OnClickListener() {
             @Override

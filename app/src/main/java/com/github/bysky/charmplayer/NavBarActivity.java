@@ -4,10 +4,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Bundle;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by asus on 2017/12/1.
@@ -26,9 +29,10 @@ public class NavBarActivity extends BaseActivity {
     private Button navButtonPre;
     private Button navButtonNext;
     private TextView navTextTitle;
-    private TextView navTextLrc;
+    private TextView navTextArt;
     private ProgressBar navProgressBar;
     private int playState;
+    private Music music;    //当前播放歌曲
     protected MusicBroadcastStateReceiver stateReceiver;
 
     public class MusicBroadcastStateReceiver extends BroadcastReceiver{
@@ -50,8 +54,10 @@ public class NavBarActivity extends BaseActivity {
                     //歌曲名及歌词
                     if(intent.getStringExtra("TITLE") != null)
                         navTextTitle.setText(intent.getStringExtra("TITLE") );
-                    if(intent.getStringExtra("LRC") != null)
-                        navTextLrc.setText(intent.getStringExtra("LRC") );
+                    if(intent.getStringExtra("ARTIST") != null)
+                        navTextArt.setText(intent.getStringExtra("ARTIST") );
+                    if(intent.getSerializableExtra("MUSIC") !=null)
+                        music = (Music)intent.getSerializableExtra("MUSIC");
                     break;
                 case BUTTON_PRE:
                     navButtonPre.setEnabled(true);
@@ -73,17 +79,33 @@ public class NavBarActivity extends BaseActivity {
     }
 
     @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            music = (Music)savedInstanceState.getSerializable("MUSIC");
+        }
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         //此时已得到view
+        //恢复数据
+        navTextTitle = findViewById(R.id.text_view_music_name);
+        navTextArt = findViewById(R.id.text_view_music_art);
+        if(music != null){
+            String[] strings = getArtistAndMusic(music);
+            navTextTitle.setText(strings[1]);
+            navTextArt.setText(strings[0]);
+        }
         navButtonPlay = findViewById(R.id.button_control_play);
         navButtonPre = findViewById(R.id.button_control_pre);
         navButtonNext = findViewById(R.id.button_control_next);
-        navTextTitle = findViewById(R.id.text_view_music_name);
-        navTextLrc = findViewById(R.id.text_view_music_lrc);
-        stateReceiver = new MusicBroadcastStateReceiver();
-        IntentFilter filter = new IntentFilter("com.github.bysky.charmplayer.MUSIC_BROADCAST_STATE");
-        registerReceiver(stateReceiver,filter);
+        if(stateReceiver == null){
+            stateReceiver = new MusicBroadcastStateReceiver();
+            IntentFilter filter = new IntentFilter("com.github.bysky.charmplayer.MUSIC_BROADCAST_STATE");
+            registerReceiver(stateReceiver,filter);
+        }
     }
 
     @Override
@@ -91,6 +113,7 @@ public class NavBarActivity extends BaseActivity {
         super.onResume();
         Intent intent = new Intent("com.github.bysky.charmplayer.MUSIC_BROADCAST_INSTRUCTION");
         intent.putExtra("OPERATION",BroadcastService.GET_PLAY_STATE);
+        sendBroadcast(intent);
         //TODO:有列表的活动中，获取歌曲信息并高亮
     }
 
@@ -98,6 +121,13 @@ public class NavBarActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(stateReceiver);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if(music != null)
+            outState.putSerializable("MUSIC",music);
     }
 
     public int getPlayState(){

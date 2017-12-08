@@ -28,33 +28,37 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="@dimen/icon_size_normal"
-            android:layout_weight="5"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/text_view_music_name"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
+                android:paddingStart="@dimen/mini_border"
+                android:paddingEnd="@dimen/mini_border"
                 android:text="@string/default_music_title"
                 android:textColor="@color/elephantBlack"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/text_view_music_lrc"
-                android:layout_width="wrap_content"
+                android:id="@+id/text_view_music_art"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
+                android:paddingStart="@dimen/mini_border"
+                android:paddingEnd="@dimen/mini_border"
                 android:text="@string/default_music_lrc"
                 android:textSize="14sp" />
         </LinearLayout>
 
         <Button
             android:id="@+id/button_control_pre"
-            android:layout_width="@dimen/icon_size_small"
-            android:layout_height="@dimen/icon_size_small"
+            android:layout_width="@dimen/icon_size_mini"
+            android:layout_height="@dimen/icon_size_mini"
             android:layout_gravity="center"
             android:layout_margin="@dimen/mini_border"
             android:layout_weight="0"
@@ -62,8 +66,8 @@
 
         <Button
             android:id="@+id/button_control_play"
-            android:layout_width="48dp"
-            android:layout_height="@dimen/icon_size_normal"
+            android:layout_width="@dimen/icon_size_small"
+            android:layout_height="@dimen/icon_size_small"
             android:layout_gravity="center"
             android:layout_margin="@dimen/mini_border"
             android:layout_weight="0"
@@ -71,8 +75,8 @@
 
         <Button
             android:id="@+id/button_control_next"
-            android:layout_width="@dimen/icon_size_small"
-            android:layout_height="@dimen/icon_size_small"
+            android:layout_width="@dimen/icon_size_mini"
+            android:layout_height="@dimen/icon_size_mini"
             android:layout_gravity="center"
             android:layout_margin="@dimen/mini_border"
             android:layout_weight="0"
