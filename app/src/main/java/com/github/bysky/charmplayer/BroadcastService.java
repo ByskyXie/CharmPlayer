@@ -8,24 +8,21 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.IBinder;
-import android.os.Message;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static android.app.Notification.FLAG_ONGOING_EVENT;
+import static android.app.Notification.FLAG_FOREGROUND_SERVICE;
 
-public class BroadcastService extends Service implements Runnable {
+public class BroadcastService extends BaseService implements Runnable {
 
     final static int NONE_MUSIC = 0;
     final static int PAUSE_MUSIC = 1;
@@ -91,15 +88,14 @@ public class BroadcastService extends Service implements Runnable {
                     .setStyle(new NotificationCompat.DecoratedCustomViewStyle())    //自定义视图
                     .setCustomContentView(remoteViews)  //布局
                     .setContentIntent(pint) //响应事件
-                    .setSmallIcon(R.drawable.icon_charm)   //不需要小图标
-                    .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.icon_charm))   //图标
-//                .setWhen(System.currentTimeMillis())
+                    .setSmallIcon(R.mipmap.charm_small)   //不需要小图标
+                    .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.mipmap.charm))   //图标
                     .setShowWhen(false)
                     .build();
             //设为常驻通知栏
-            noti.flags = FLAG_ONGOING_EVENT;
+            noti.flags = FLAG_FOREGROUND_SERVICE;
         }
-        notiManager.notify(noti.hashCode(),noti);
+        notiManager.notify(noti.hashCode(), noti);
         while (true) {
             //循环运行直到程序停止并退出 //TODO:会出现播放文件被删除的情况
             try {
@@ -225,9 +221,8 @@ public class BroadcastService extends Service implements Runnable {
                 intent.putExtra("TARGET_VIEW",NavBarActivity.BUTTON_PLAY);
                 //传入歌名
                 if(broadcastList != null){
-                    String[] strings = getArtistAndMusic(broadcastList.get(playPosition));
-                    intent.putExtra("TITLE",strings[1]);
-                    intent.putExtra("ARTIST",strings[0]);
+                    intent.putExtra("TITLE",broadcastList.get(playPosition).getMusicName());
+                    intent.putExtra("ARTIST",broadcastList.get(playPosition).getArtist());
                     intent.putExtra("MUSIC",broadcastList.get(playPosition));
                 }
                 sendBroadcast(intent);
@@ -237,22 +232,7 @@ public class BroadcastService extends Service implements Runnable {
         instruction = null;
     }
 
-    private String[] getArtistAndMusic(Music music){
-        String[] strings = new String[2];
-        String fileName = music.getFileName();
-        if (fileName.matches(".+[ ]+[-]{1}[ ]+.+")) {
-            int temp = fileName.indexOf('-');
-            strings[0] = fileName.substring(0, temp);
-            //去除多余空格
-            while (fileName.charAt(temp + 1) == ' ')
-                temp++;
-            strings[1] = fileName.substring(temp + 1);
-        } else {
-            strings[0] =  "未知歌手";
-            strings[1] = fileName;
-        }
-        return strings;
-    }
+
 
     private void playMusic() {
         if (playState != PAUSE_MUSIC)
@@ -263,9 +243,8 @@ public class BroadcastService extends Service implements Runnable {
         Intent intent = new Intent("com.github.bysky.charmplayer.MUSIC_BROADCAST_STATE");
         intent.putExtra("PLAY_STATE",playState);
         intent.putExtra("TARGET_VIEW",NavBarActivity.BUTTON_PLAY);
-        String[] strings = getArtistAndMusic(broadcastList.get(playPosition));
-        intent.putExtra("TITLE",strings[1]);
-        intent.putExtra("ARTIST",strings[0]);
+        intent.putExtra("TITLE",broadcastList.get(playPosition).getMusicName());
+        intent.putExtra("ARTIST",broadcastList.get(playPosition).getArtist());
         sendBroadcast(intent);
     }
 
@@ -280,9 +259,8 @@ public class BroadcastService extends Service implements Runnable {
         intent.putExtra("PLAY_STATE",playState);
         intent.putExtra("TARGET_VIEW",NavBarActivity.BUTTON_PLAY);
         //改变
-        String[] strings = getArtistAndMusic(music);
-        intent.putExtra("TITLE",strings[1]);
-        intent.putExtra("ARTIST",strings[0]);
+        intent.putExtra("TITLE",broadcastList.get(playPosition).getMusicName());
+        intent.putExtra("ARTIST",broadcastList.get(playPosition).getArtist());
         sendBroadcast(intent);
     }
 

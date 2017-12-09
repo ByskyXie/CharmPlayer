@@ -36,5 +36,13 @@
 
     </style>
 
+    <style name="ButtonNoShadow_NoBorder" parent="@style/Widget.AppCompat.Button.Borderless">
+        <item name="android:background">@drawable/shape_button_no_border_light</item>
+    </style>
+
+    <style name="ButtonNoShadow_HaveBorder" parent="@style/Widget.AppCompat.Button.Borderless">
+        <item name="android:background">@drawable/shape_button_have_border_light</item>
+    </style>
+
     <!-- ProgressBar  -->
 </resources>

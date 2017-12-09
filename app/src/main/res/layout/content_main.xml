@@ -10,67 +10,93 @@
     tools:showIn="@layout/app_bar_main">
 
     <LinearLayout
-        android:id="@+id/content_main_full"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <LinearLayout
-            android:id="@+id/content_main_upper"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <Button
-                android:id="@+id/button_entrance_local_music"
-                android:background="@drawable/layout_for_button"
-                android:drawableTop="@drawable/ic_local"
-                android:padding="@dimen/mid_border"
-                android:text="@string/local_music"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent" />
-            <Button
-                android:id="@+id/button_entrance_scan"
-                android:background="@drawable/layout_for_button"
-                android:drawableTop="@drawable/ic_scan"
-                android:layout_weight="1"
-                android:padding="@dimen/mid_border"
-                android:text="@string/scan_music"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"/>
-        </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/content_main_lower"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <Button
-                android:padding="@dimen/mid_border"
-                android:id="@+id/button_entrance_music_list"
-                android:background="@drawable/layout_for_button"
-                android:drawableTop="@drawable/ic_music_list"
-                android:layout_weight="1"
-                android:text="@string/music_list"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"/>
-            <Button
-                android:padding="@dimen/mid_border"
-                android:id="@+id/button_entrance_i_fond"
-                android:background="@drawable/layout_for_button"
-                android:drawableTop="@drawable/ic_fond"
-                android:layout_weight="1"
-                android:text="@string/music_fond"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
+        <com.github.bysky.charmplayer.AdjustDrawButton
+            android:id="@+id/button_entrance_local_music"
+            style="@style/ButtonNoShadow_HaveBorder"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_local"
+            android:padding="@dimen/mid_border"
+            android:text="@string/local_music" />
 
+        <com.github.bysky.charmplayer.AdjustDrawButton
+            android:id="@+id/button_entrance_scan"
+            style="@style/ButtonNoShadow_HaveBorder"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_scan"
+            android:padding="@dimen/mid_border"
+            android:text="@string/scan_music" />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_weight="1"
-        android:layout_gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <include
-            layout="@layout/playing_button_nav"/>
+
+        <com.github.bysky.charmplayer.AdjustDrawButton
+            android:id="@+id/button_entrance_music_list"
+            style="@style/ButtonNoShadow_HaveBorder"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_artist"
+            android:padding="@dimen/mid_border"
+            android:text="@string/artist" />
+
+        <com.github.bysky.charmplayer.AdjustDrawButton
+            android:id="@+id/button_entrance_i_fond"
+            style="@style/ButtonNoShadow_HaveBorder"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_fond"
+            android:padding="@dimen/mid_border"
+            android:text="@string/music_fond" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#f0f0f0"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingEnd="0dp"
+            android:paddingStart="@dimen/small_border"
+            android:text="@string/music_list" />
+
+        <com.github.bysky.charmplayer.AdjustDrawButton
+            style="@style/ButtonNoShadow_HaveBorder"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_gravity="end"
+            android:text="@string/edit_list"
+            android:textColor="@color/iconGray"
+            android:layout_weight="0"
+            android:drawableRight="@drawable/ic_setting_light" />
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_music_list"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_weight="0">
+        <include layout="@layout/playing_button_nav" />
     </LinearLayout>
     <!--<TextView-->
     <!--android:layout_width="wrap_content"-->

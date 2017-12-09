@@ -17,7 +17,7 @@ import android.widget.Toast;
 public class MainActivity extends NavBarActivity
         implements NavigationView.OnNavigationItemSelectedListener,View.OnClickListener {
 
-    private Button buttonLocalMusic,buttonScan,buttonFond,buttonMusicList;
+    private AdjustDrawButton buttonLocalMusic,buttonScan,buttonFond,buttonMusicList;
     private NavigationView navView;
 
     @Override
@@ -39,6 +39,7 @@ public class MainActivity extends NavBarActivity
 
     @Override
     protected void initialUI() {
+        int iconWH = (int)(getResources().getDisplayMetrics().widthPixels/4*0.618);
         navView = findViewById(R.id.nav_view);
         navView.setNavigationItemSelectedListener(this);
         //
@@ -46,11 +47,18 @@ public class MainActivity extends NavBarActivity
         buttonMusicList = findViewById(R.id.button_entrance_music_list);       buttonMusicList.setOnClickListener(this);
         buttonScan = findViewById(R.id.button_entrance_scan);                  buttonScan.setOnClickListener(this);
         buttonFond = findViewById(R.id.button_entrance_i_fond);                buttonFond.setOnClickListener(this);
+        //
+        buttonLocalMusic.setBackgroundSize(1,iconWH,iconWH);
+        buttonMusicList.setBackgroundSize(1,iconWH,iconWH);
+        buttonFond.setBackgroundSize(1,iconWH,iconWH);
+        buttonScan.setBackgroundSize(1,iconWH,iconWH);
     }
 
     @Override
     public void onClick(View v) {
         Intent intent;
+        //传入父控件
+        super.onClick(v);
         switch(v.getId()){
             case R.id.button_entrance_local_music:
                 intent = new Intent(this,LocalMusicActivity.class);

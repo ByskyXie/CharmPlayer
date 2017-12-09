@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -16,7 +17,7 @@ import android.widget.Toast;
  * Created by asus on 2017/12/1.
  */
 
-public class NavBarActivity extends BaseActivity {
+public class NavBarActivity extends BaseActivity implements View.OnClickListener{
 
     final static int BUTTON_PLAY = 1;
     final static int BUTTON_NEXT = 2;
@@ -79,6 +80,40 @@ public class NavBarActivity extends BaseActivity {
     }
 
     @Override
+    public void onClick(View v) {
+        Intent intent = new Intent("com.github.bysky.charmplayer.MUSIC_BROADCAST_INSTRUCTION");
+        switch (v.getId()) {
+            case R.id.button_control_play:
+                if(playState == BroadcastService.NONE_MUSIC)
+                    break;
+                //等待事件完成后才能继续点击
+                v.setEnabled(false);
+                if(playState == BroadcastService.PAUSE_MUSIC)
+                    intent.putExtra("OPERATION", BroadcastService.PLAY_MUSIC);
+                else
+                    intent.putExtra("OPERATION", BroadcastService.PAUSE_MUSIC);
+                sendBroadcast(intent);
+                break;
+            case R.id.button_control_pre:
+                if(playState == BroadcastService.NONE_MUSIC)
+                    break;
+                //等待事件完成后才能继续点击
+                v.setEnabled(false);
+                intent.putExtra("OPERATION", BroadcastService.PREVIOUS_MUSIC);
+                sendBroadcast(intent);
+                break;
+            case R.id.button_control_next:
+                if(playState == BroadcastService.NONE_MUSIC)
+                    break;
+                //等待事件完成后才能继续点击
+                v.setEnabled(false);
+                intent.putExtra("OPERATION", BroadcastService.NEXT_MUSIC);
+                sendBroadcast(intent);
+                break;
+        }
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(savedInstanceState != null){
@@ -94,13 +129,15 @@ public class NavBarActivity extends BaseActivity {
         navTextTitle = findViewById(R.id.text_view_music_name);
         navTextArt = findViewById(R.id.text_view_music_art);
         if(music != null){
-            String[] strings = getArtistAndMusic(music);
-            navTextTitle.setText(strings[1]);
-            navTextArt.setText(strings[0]);
+            navTextTitle.setText(music.getMusicName());
+            navTextArt.setText(music.getArtist());
         }
         navButtonPlay = findViewById(R.id.button_control_play);
         navButtonPre = findViewById(R.id.button_control_pre);
         navButtonNext = findViewById(R.id.button_control_next);
+        navButtonPlay.setOnClickListener(this);
+        navButtonPre.setOnClickListener(this);
+        navButtonNext.setOnClickListener(this);
         if(stateReceiver == null){
             stateReceiver = new MusicBroadcastStateReceiver();
             IntentFilter filter = new IntentFilter("com.github.bysky.charmplayer.MUSIC_BROADCAST_STATE");

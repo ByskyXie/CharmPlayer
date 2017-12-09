@@ -75,9 +75,8 @@ public class BaseActivity extends AppCompatActivity{
         button.setTextColor(Color.WHITE);
     }
 
-    protected String[] getArtistAndMusic(Music music){
+    protected String[] getArtistAndMusic(String fileName){
         String[] strings = new String[2];
-        String fileName = music.getFileName();
         if (fileName.matches(".+[ ]+[-]{1}[ ]+.+")) {
             int temp = fileName.indexOf('-');
             strings[0] = fileName.substring(0, temp);

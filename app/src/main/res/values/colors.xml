@@ -14,12 +14,13 @@
     <color name="dividerColor_red">#BDBDBD</color>
 
     <color name="white">#FFFFFF</color>
-    <color name="black">#000000</color>
+    <color name="lightGray">#EAEAEA</color>
     <color name="gray">#C0C0C0</color>
     <color name="coldGray">#808A87</color>
+    <color name="onPressedGray">#9FAFAFAF</color>
     <color name="iconGray">#515151</color>
     <color name="elephantBlack">#292421</color>
-    <color name="onPressedGray">#9FAFAFAF</color>
+    <color name="black">#000000</color>
 
     <color name="fullTransparent">#00000000</color>
     <color name="level_0_Transparent">#10000000</color>

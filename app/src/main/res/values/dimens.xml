@@ -6,6 +6,7 @@
     <dimen name="nav_header_height">160dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <!--DIY-->
+    <dimen name="nano_border">2dp</dimen>
     <dimen name="mini_border">4dp</dimen>
     <dimen name="small_border">8dp</dimen>
     <dimen name="mid_border">16dp</dimen>

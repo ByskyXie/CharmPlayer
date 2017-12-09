@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 import static com.github.bysky.charmplayer.BaseActivity.musicSQLiteDatabases;
 
-public class ScanFileService extends Service
+public class ScanFileService extends BaseService
     implements Runnable{
 
     public final int SCAN_RUN = 1;
@@ -130,7 +130,6 @@ public class ScanFileService extends Service
     private void updateDatabase(ArrayList<File> fileList){
         ContentValues contentValues = new ContentValues();    //保存插入数据集
         String music_name,artist;   //保存文件信息
-        RandomAccessFile randaf;        //文件定位读取
         ArrayList<String> dataList = new ArrayList<String>();
         Cursor cursor = musicSQLiteDatabases.query("MUSIC",new String[]{"FILE_PATH"}
             ,null,null,null,null,null);
@@ -154,37 +153,22 @@ public class ScanFileService extends Service
             //未包含于曲库说明是新歌曲（且大于大小限制）
             try{
                 music_name = artist = null;
-                if(file.getName().substring(file.getName().lastIndexOf(".")+1).equalsIgnoreCase("mp3")){
-                    //MP3格式有额外的歌曲信息可以入库
-                    randaf = new RandomAccessFile(file,"r");
-                    //读取信息(歌曲信息存放于末尾的128个字节中)
-                    randaf.seek(file.length()-125);
-                    //将RandomAccessFile读取出的“ISO-8859-1”编码的文字转换为“GBK”
-                    music_name = randaf.readLine();
-                    int temp = music_name.indexOf('\0');
-                    if(temp!=-1)
-                        music_name = new String(music_name.substring(0,temp).getBytes("ISO-8859-1") , "GBK");
-                    else if(music_name.length()>30)
-                        music_name = new String(music_name.substring(0,30).getBytes("ISO-8859-1") , "GBK"); //歌曲名
-                    else if(music_name.length()<=30)
-                        music_name = new String(music_name.getBytes("ISO-8859-1") , "GBK");
-
-                    //接下来是歌手(同上)
-                    randaf.seek(file.length()-95);
-                    artist = randaf.readLine();
-                    temp = artist.indexOf('\0');
-                    if(temp!=-1)
-                        artist = new String(artist.substring(0,temp).getBytes("ISO-8859-1"),"GBK");
-                    else if(artist.length()>30)
-                        artist = new String(artist.substring(0,30).getBytes("ISO-8859-1"),"GBK");
-                    else if(artist.length()<=30)
-                        artist = new String( artist.getBytes("ISO-8859-1") ,"GBK" );
+                String fileName = file.getAbsolutePath().substring( file.getAbsolutePath().lastIndexOf('/')+1
+                        ,file.getAbsolutePath().lastIndexOf('.') ) ;
+                String[] strings = getArtistAndMusic(fileName);
+                artist = strings[0];
+                music_name = strings[1];
+                if(strings[0].equals("未知歌手") &&
+                        file.getName().substring(file.getName().lastIndexOf(".")+1).equalsIgnoreCase("mp3")){
+                    //歌手
+                    String temp = getInnerArtist(file);
+                    if(temp.length()>=1 && !temp.equals(" ") &&!temp.matches(".{3,}"))
+                        artist = temp;
                 }
                 //放入信息集
                 contentValues.clear();
                 contentValues.put("FILE_PATH",file.getAbsolutePath());
-                contentValues.put("FILE_NAME",file.getAbsolutePath().substring( file.getAbsolutePath().lastIndexOf('/')+1
-                        ,file.getAbsolutePath().lastIndexOf('.') ) );
+                contentValues.put("FILE_NAME",fileName);
                 contentValues.put("FILE_FOLDER",file.getAbsolutePath().substring(0,file.getAbsolutePath().lastIndexOf('/')));
                 contentValues.put("MUSIC_NAME",music_name);
                 contentValues.put("ARTIST",artist);
@@ -196,6 +180,43 @@ public class ScanFileService extends Service
                 Log.e(".ScanFileService","insert to database case read file failed\n"+ioe);
             }
         }
+    }
+
+    /**
+     * 注意：内部不对后缀名进行检查，调用者必须保证为mp3格式文件
+     * */
+    private String getInnerMusicName(File file) throws IOException{
+        RandomAccessFile randaf = new RandomAccessFile(file,"r");        //文件定位读取
+        String name;
+        //读取信息(歌曲信息存放于末尾的128个字节中)
+        randaf.seek(file.length()-125);
+        //将RandomAccessFile读取出的“ISO-8859-1”编码的文字转换为“GBK”
+        name = randaf.readLine();
+        int temp = name.indexOf('\0');
+        if(temp!=-1)
+            name = new String(name.substring(0,temp).getBytes("ISO-8859-1") , "GBK");
+        else if(name.length()>30)
+            name = new String(name.substring(0,30).getBytes("ISO-8859-1") , "GBK"); //歌曲名
+        else if(name.length()<=30)
+            name = new String(name.getBytes("ISO-8859-1") , "GBK");
+        randaf.close();
+        return name;
+    }
+
+    private String getInnerArtist(File file) throws IOException{
+        RandomAccessFile randaf = new RandomAccessFile(file,"r");        //文件定位读取
+        String artist;
+        randaf.seek(file.length()-95);
+        artist = randaf.readLine();
+        int temp = artist.indexOf('\0');
+        if(temp!=-1)
+            artist = new String(artist.substring(0,temp).getBytes("ISO-8859-1"),"GBK");
+        else if(artist.length()>30)
+            artist = new String(artist.substring(0,30).getBytes("ISO-8859-1"),"GBK");
+        else if(artist.length()<=30)
+            artist = new String( artist.getBytes("ISO-8859-1") ,"GBK" );
+        randaf.close();
+        return  artist;
     }
     /**
      * 设置最小扫描文件
