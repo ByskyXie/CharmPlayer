@@ -16,8 +16,8 @@
     <!-- 用于约束播放等按钮的大小 -->
 
     <dimen name="icon_size_nano">16dp</dimen>
-    <dimen name="icon_size_mini">28dp</dimen>
-    <dimen name="icon_size_small">38dp</dimen>
+    <dimen name="icon_size_mini">24dp</dimen>
+    <dimen name="icon_size_small">36dp</dimen>
     <dimen name="icon_size_normal">48dp</dimen>
     <dimen name="icon_size_big">64dp</dimen>
     <dimen name="icon_size_large">128dp</dimen>

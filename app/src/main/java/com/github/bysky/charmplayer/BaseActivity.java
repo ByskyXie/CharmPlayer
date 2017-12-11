@@ -58,9 +58,14 @@ public class BaseActivity extends AppCompatActivity{
         }while(all_music.moveToNext());
     }
 
-    public Cursor getSavedMusicList(){
+    protected Cursor getSavedMusicList(){
         return musicSQLiteDatabases.query("MUSIC",new String[]{"FILE_PATH","FILE_NAME","FILE_FOLDER","MUSIC_NAME","ARTIST"}
-            ,null, null,null,null,null);
+            ,null, null,null,null,"MUSIC_NAME DESC");
+    }
+
+    protected Cursor getArtistList(){
+        return musicSQLiteDatabases.query("MUSIC",new String[]{"ARTIST"}
+                ,null, null,"ARTIST",null,"MUSIC_NAME DESC");
     }
 
     protected void initialUI(){}

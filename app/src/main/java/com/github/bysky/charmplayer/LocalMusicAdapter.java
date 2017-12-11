@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -25,6 +26,8 @@ public class LocalMusicAdapter extends RecyclerView.Adapter<LocalMusicAdapter.Lo
     static class LocalMusicHolder extends RecyclerView.ViewHolder {
         TextView textViewMusicName;
         TextView textViewMusicArtist;
+        ImageView imgAdd;
+        ImageView imgMore;
         View layoutPlay;
         View itemView;
 
@@ -33,6 +36,8 @@ public class LocalMusicAdapter extends RecyclerView.Adapter<LocalMusicAdapter.Lo
             textViewMusicName = itemView.findViewById(R.id.item_local_music_name);
             textViewMusicArtist = itemView.findViewById(R.id.item_local_music_artist);
             layoutPlay = itemView.findViewById(R.id.item_local_music_layout_play);
+            imgAdd = itemView.findViewById(R.id.item_local_music_add);
+            imgMore = itemView.findViewById(R.id.item_local_music_more);
             this.itemView = itemView;
         }
     }
@@ -79,13 +84,13 @@ public class LocalMusicAdapter extends RecyclerView.Adapter<LocalMusicAdapter.Lo
             holder.textViewMusicName.setText(fileName);
             holder.textViewMusicArtist.setText("未知歌手");
         }
-        //TODO:若正在播放则高亮
-
+        //TODO:怎么实现同步进行？还有再次点击暂停
+//        changeChildViewState(holder);
         //监听器
         holder.layoutPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClick(LocalMusicAdapter.this, holder.getAdapterPosition());
+                listener.onClick(LocalMusicAdapter.this, holder);
             }
         });
         //设置icon长宽
@@ -99,6 +104,16 @@ public class LocalMusicAdapter extends RecyclerView.Adapter<LocalMusicAdapter.Lo
                 (int) (context.getResources().getDisplayMetrics().heightPixels * 1.0 / 11);
     }
 
+    protected void changeChildViewState(LocalMusicHolder holder){
+        if( musicList.get(holder.getAdapterPosition()).getFilePath().equals(
+                ((NavBarActivity)context).getPlayingMusicPath()) ){
+            //若是正在播放的歌曲则高亮
+            holder.itemView.setBackgroundResource(R.drawable.layout_for_button_gray);
+        }else{
+            holder.itemView.setBackgroundResource( R.drawable.layout_for_button);
+        }
+    }
+
     @Override
     public int getItemCount() {
         return dbList.getCount();
@@ -109,7 +124,7 @@ public class LocalMusicAdapter extends RecyclerView.Adapter<LocalMusicAdapter.Lo
     }
 
     interface OnItemClickListener {
-        void onClick(LocalMusicAdapter adapter, int position);
+        void onClick(LocalMusicAdapter adapter, LocalMusicHolder holder);
     }
 
 }

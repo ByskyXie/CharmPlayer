@@ -167,6 +167,12 @@ public class NavBarActivity extends BaseActivity implements View.OnClickListener
             outState.putSerializable("MUSIC",music);
     }
 
+    protected String getPlayingMusicPath(){
+        if(music != null)
+            return music.getFilePath();
+        return null;
+    }
+
     public int getPlayState(){
         return playState;
     }

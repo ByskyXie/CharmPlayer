@@ -31,11 +31,11 @@ public class LocalMusicActivity extends NavBarActivity
         //recyclerView 的操作
         LocalMusicAdapter.OnItemClickListener listener = new LocalMusicAdapter.OnItemClickListener() {
             @Override
-            public void onClick(LocalMusicAdapter adapter, int position) {
+            public void onClick(LocalMusicAdapter adapter, LocalMusicAdapter.LocalMusicHolder holder) {
                 Intent intent = new Intent("com.github.bysky.charmplayer.MUSIC_BROADCAST_INSTRUCTION");
                 intent.putExtra("OPERATION", BroadcastService.SET_BROADCAST_LIST);
                 intent.putExtra("BROADCAST_LIST", adapter.getMusicList());
-                intent.putExtra("POSITION", position);
+                intent.putExtra("POSITION", holder.getAdapterPosition());
                 sendBroadcast(intent);
             }
         };
