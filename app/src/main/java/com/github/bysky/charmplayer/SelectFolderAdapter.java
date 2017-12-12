@@ -102,7 +102,7 @@ public class SelectFolderAdapter extends RecyclerView.Adapter<SelectFolderAdapte
             }
         });
         //改变logo长宽+改变控件宽度
-        int w = llm.getWidth()/7;
+        int w = llm.getWidth()/8;
         ViewGroup.LayoutParams params = holder.img.getLayoutParams();
         params.height = params.width = w;
     }

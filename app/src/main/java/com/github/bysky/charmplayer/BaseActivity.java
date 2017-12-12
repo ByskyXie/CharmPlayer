@@ -60,12 +60,12 @@ public class BaseActivity extends AppCompatActivity{
 
     protected Cursor getSavedMusicList(){
         return musicSQLiteDatabases.query("MUSIC",new String[]{"FILE_PATH","FILE_NAME","FILE_FOLDER","MUSIC_NAME","ARTIST"}
-            ,null, null,null,null,"MUSIC_NAME DESC");
+            ,null, null,null,null,"FILE_PATH DESC");
     }
 
     protected Cursor getArtistList(){
         return musicSQLiteDatabases.query("MUSIC",new String[]{"ARTIST"}
-                ,null, null,"ARTIST",null,"MUSIC_NAME DESC");
+                ,null, null,"ARTIST",null,"MUSIC_NAME ASC");
     }
 
     protected void initialUI(){}
@@ -80,19 +80,4 @@ public class BaseActivity extends AppCompatActivity{
         button.setTextColor(Color.WHITE);
     }
 
-    protected String[] getArtistAndMusic(String fileName){
-        String[] strings = new String[2];
-        if (fileName.matches(".+[ ]+[-]{1}[ ]+.+")) {
-            int temp = fileName.indexOf('-');
-            strings[0] = fileName.substring(0, temp);
-            //去除多余空格
-            while (fileName.charAt(temp + 1) == ' ')
-                temp++;
-            strings[1] = fileName.substring(temp + 1);
-        } else {
-            strings[0] =  "未知歌手";
-            strings[1] = fileName;
-        }
-        return strings;
-    }
 }

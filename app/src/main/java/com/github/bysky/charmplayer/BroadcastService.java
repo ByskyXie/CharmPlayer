@@ -70,6 +70,7 @@ public class BroadcastService extends BaseService implements Runnable {
         public void onReceive(Context context, Intent intent) {
             // TODO: This method is called when the BroadcastReceiver is receiving
             //含有指令则传递给播放线程
+
             if (intent.getIntExtra("OPERATION", -1) != -1)
                 service.instruction = intent;
         }
@@ -78,6 +79,9 @@ public class BroadcastService extends BaseService implements Runnable {
     @Override
     public void run() {
         RemoteViews remoteViews = new RemoteViews(getPackageName(),R.layout.notification_music);
+        //设置点击事件
+        setRemoteClickEvent(remoteViews);
+        //通知栏
         Intent intent = new Intent(this,MainActivity.class);
         PendingIntent pint = PendingIntent.getActivities(this,0,
                 new Intent[]{intent},PendingIntent.FLAG_CANCEL_CURRENT);
@@ -95,7 +99,10 @@ public class BroadcastService extends BaseService implements Runnable {
             //设为常驻通知栏
             noti.flags = FLAG_FOREGROUND_SERVICE;
         }
-        notiManager.notify(noti.hashCode(), noti);
+        if(notiManager != null)
+            notiManager.notify(noti.hashCode(), noti);
+
+        //正式响应
         while (true) {
             //循环运行直到程序停止并退出 //TODO:会出现播放文件被删除的情况
             try {
@@ -111,6 +118,23 @@ public class BroadcastService extends BaseService implements Runnable {
                 Log.e("BroadcastService.auto", ioe.toString());
             }
         }
+    }
+
+    private void setRemoteClickEvent(RemoteViews remoteViews){
+        Intent intentPre = new Intent("com.github.bysky.charmplayer.MUSIC_BROADCAST_INSTRUCTION");
+        intentPre.putExtra("OPERATION",BroadcastService.PREVIOUS_MUSIC);
+        remoteViews.setOnClickPendingIntent(R.id.img_button_pre,PendingIntent
+                .getBroadcast(this,BroadcastService.PREVIOUS_MUSIC, intentPre,PendingIntent.FLAG_CANCEL_CURRENT));
+
+        Intent intentNext = new Intent("com.github.bysky.charmplayer.MUSIC_BROADCAST_INSTRUCTION");
+        intentNext.putExtra("OPERATION",BroadcastService.NEXT_MUSIC);
+        remoteViews.setOnClickPendingIntent(R.id.img_button_next,PendingIntent
+                .getBroadcast(this,BroadcastService.NEXT_MUSIC, intentNext,PendingIntent.FLAG_CANCEL_CURRENT));
+
+        Intent intentPlay = new Intent("com.github.bysky.charmplayer.MUSIC_BROADCAST_INSTRUCTION");
+        intentPlay.putExtra("OPERATION",BroadcastService.PLAY_MUSIC);
+        remoteViews.setOnClickPendingIntent(R.id.img_button_play,PendingIntent
+                .getBroadcast(this,BroadcastService.PLAY_MUSIC, intentPlay,PendingIntent.FLAG_CANCEL_CURRENT));
     }
 
     private void autoExecute() throws InterruptedException, IOException {
