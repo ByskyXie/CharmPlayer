@@ -39,16 +39,16 @@ public class NavBarActivity extends BaseActivity implements View.OnClickListener
     public class MusicBroadcastStateReceiver extends BroadcastReceiver{
         @Override
         public void onReceive(Context context, Intent intent) {
-            playState = intent.getIntExtra("PLAY_STATE",BroadcastService.NONE_MUSIC);
+            playState = intent.getIntExtra("PLAY_STATE",BroadcastService.STATE_NONE_MUSIC);
             int target = intent.getIntExtra("TARGET_VIEW",-1);
             switch (target){
                 case BUTTON_PLAY:
-                    if(playState != BroadcastService.NONE_MUSIC)
+                    if(playState != BroadcastService.STATE_NONE_MUSIC)
                         navButtonPlay.setEnabled(true);
                     else
                         navButtonPlay.setEnabled(false);
                     //设置图标
-                    if(playState == BroadcastService.PLAY_MUSIC)
+                    if(playState == BroadcastService.STATE_PLAY_MUSIC)
                         navButtonPlay.setBackgroundResource(R.drawable.ic_pause);
                     else
                         navButtonPlay.setBackgroundResource(R.drawable.ic_play);
@@ -84,18 +84,18 @@ public class NavBarActivity extends BaseActivity implements View.OnClickListener
         Intent intent = new Intent("com.github.bysky.charmplayer.MUSIC_BROADCAST_INSTRUCTION");
         switch (v.getId()) {
             case R.id.button_control_play:
-                if(playState == BroadcastService.NONE_MUSIC)
+                if(playState == BroadcastService.STATE_NONE_MUSIC)
                     break;
                 //等待事件完成后才能继续点击
                 v.setEnabled(false);
-                if(playState == BroadcastService.PAUSE_MUSIC)
-                    intent.putExtra("OPERATION", BroadcastService.PLAY_MUSIC);
+                if(playState == BroadcastService.STATE_PAUSE_MUSIC)
+                    intent.putExtra("OPERATION", BroadcastService.STATE_PLAY_MUSIC);
                 else
-                    intent.putExtra("OPERATION", BroadcastService.PAUSE_MUSIC);
+                    intent.putExtra("OPERATION", BroadcastService.STATE_PAUSE_MUSIC);
                 sendBroadcast(intent);
                 break;
             case R.id.button_control_pre:
-                if(playState == BroadcastService.NONE_MUSIC)
+                if(playState == BroadcastService.STATE_NONE_MUSIC)
                     break;
                 //等待事件完成后才能继续点击
                 v.setEnabled(false);
@@ -103,7 +103,7 @@ public class NavBarActivity extends BaseActivity implements View.OnClickListener
                 sendBroadcast(intent);
                 break;
             case R.id.button_control_next:
-                if(playState == BroadcastService.NONE_MUSIC)
+                if(playState == BroadcastService.STATE_NONE_MUSIC)
                     break;
                 //等待事件完成后才能继续点击
                 v.setEnabled(false);

@@ -3,7 +3,6 @@ package com.github.bysky.charmplayer;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,45 +14,49 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.RemoteViews;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
 import static android.app.Notification.FLAG_FOREGROUND_SERVICE;
+import static android.app.Notification.FLAG_ONGOING_EVENT;
 
 public class BroadcastService extends BaseService implements Runnable {
 
-    final static int NONE_MUSIC = 0;
-    final static int PAUSE_MUSIC = 1;
-    final static int PLAY_MUSIC = 2;
+    final static int STATE_NONE_MUSIC = 0;
+    final static int STATE_PAUSE_MUSIC = 1;
+    final static int STATE_PLAY_MUSIC = 2;
     //
     final static int NEXT_MUSIC = 10;
     final static int PREVIOUS_MUSIC = 11;
     final static int CHANGE_PLAY_MODE = 12;
     final static int GET_PLAY_STATE = 13;
+    final static int SWITCH_MUSIC = 14; //专门为通知栏的控制键设置的值
     //
     final static int SET_BROADCAST_LIST = 100;
     final static int ADD_LIST_ITEM = 101;
     final static int CLEAR_BROADCAST_LIST = 102;
+    final static int EXIT = 103;
     //
     final static int PLAY_MODE_ORDER = 1000;
     final static int PLAY_MODE_REPEAT = 1001;
     final static int PLAY_MODE_RANDOM = 1002;
     final static String NOTIFICATION = "NOTIFICATION_BROADCAST_SERVICE";
+    final static int NOTI_CODE = 11235811;  //斐波那契..
 
     private int playMode = PLAY_MODE_ORDER;
-    private int playState = NONE_MUSIC;
+    private int playState = STATE_NONE_MUSIC;
     private MediaPlayer mediaPlayer;
     private ArrayList<Music> broadcastList;
     private MusicBroadcastInstructionReceiver receiver = new MusicBroadcastInstructionReceiver(this);
     private IntentFilter filter;
     private Thread thread;
+    private RemoteViews remoteViews;
     //用于记录当前播放歌曲在列表里的位置
     private int playPosition;
     //传入intent 的OPERATION部分相当于指令
     private Intent instruction;
-    private Notification noti;
+    private NotificationCompat.Builder builder;
 
     /**
      * MusicBroadcastReceiver类用于传输控制指令
@@ -78,7 +81,13 @@ public class BroadcastService extends BaseService implements Runnable {
 
     @Override
     public void run() {
-        RemoteViews remoteViews = new RemoteViews(getPackageName(),R.layout.notification_music);
+        remoteViews = new RemoteViews(getPackageName(),R.layout.notification_music);
+        remoteViews.setTextViewText(R.id.music_title, getResources().getString(R.string.default_music_title));
+        remoteViews.setTextViewText(R.id.music_artist, getResources().getString(R.string.default_music_art));
+        remoteViews.setImageViewResource(R.id.img_button_play,R.drawable.ic_notification_play);
+        remoteViews.setImageViewResource(R.id.img_button_pre,R.drawable.ic_notification_previous);
+        remoteViews.setImageViewResource(R.id.img_button_next,R.drawable.ic_notification_next);
+        remoteViews.setImageViewResource(R.id.img_button_exit,R.drawable.ic_cancel);
         //设置点击事件
         setRemoteClickEvent(remoteViews);
         //通知栏
@@ -87,21 +96,18 @@ public class BroadcastService extends BaseService implements Runnable {
                 new Intent[]{intent},PendingIntent.FLAG_CANCEL_CURRENT);
         //准备通知
         NotificationManager notiManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        if(noti == null){
-            noti = new NotificationCompat.Builder(BroadcastService.this, NOTIFICATION)
+        if(builder == null){
+            builder = new NotificationCompat.Builder(BroadcastService.this, NOTIFICATION)
                     .setStyle(new NotificationCompat.DecoratedCustomViewStyle())    //自定义视图
                     .setCustomContentView(remoteViews)  //布局
                     .setContentIntent(pint) //响应事件
                     .setSmallIcon(R.mipmap.charm_small)   //不需要小图标
+                    .setOngoing(true)   //设为常驻通知栏
                     .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.mipmap.charm))   //图标
-                    .setShowWhen(false)
-                    .build();
-            //设为常驻通知栏
-            noti.flags = FLAG_FOREGROUND_SERVICE;
+                    .setShowWhen(false);
         }
         if(notiManager != null)
-            notiManager.notify(noti.hashCode(), noti);
-
+            notiManager.notify(NOTIFICATION, NOTI_CODE, builder.build());
         //正式响应
         while (true) {
             //循环运行直到程序停止并退出 //TODO:会出现播放文件被删除的情况
@@ -132,9 +138,14 @@ public class BroadcastService extends BaseService implements Runnable {
                 .getBroadcast(this,BroadcastService.NEXT_MUSIC, intentNext,PendingIntent.FLAG_CANCEL_CURRENT));
 
         Intent intentPlay = new Intent("com.github.bysky.charmplayer.MUSIC_BROADCAST_INSTRUCTION");
-        intentPlay.putExtra("OPERATION",BroadcastService.PLAY_MUSIC);
+        intentPlay.putExtra("OPERATION",BroadcastService.SWITCH_MUSIC);
         remoteViews.setOnClickPendingIntent(R.id.img_button_play,PendingIntent
-                .getBroadcast(this,BroadcastService.PLAY_MUSIC, intentPlay,PendingIntent.FLAG_CANCEL_CURRENT));
+                .getBroadcast(this,BroadcastService.SWITCH_MUSIC, intentPlay,PendingIntent.FLAG_CANCEL_CURRENT));
+
+        Intent intentCancel = new Intent("com.github.bysky.charmplayer.MUSIC_BROADCAST_INSTRUCTION");
+        intentCancel.putExtra("OPERATION",BroadcastService.EXIT);
+        remoteViews.setOnClickPendingIntent(R.id.img_button_exit,PendingIntent
+                .getBroadcast(this,BroadcastService.EXIT, intentCancel,PendingIntent.FLAG_CANCEL_CURRENT));
     }
 
     private void autoExecute() throws InterruptedException, IOException {
@@ -142,7 +153,7 @@ public class BroadcastService extends BaseService implements Runnable {
             thread.sleep(800);
             return;
         }
-        if (playState == PLAY_MUSIC) {
+        if (playState == STATE_PLAY_MUSIC) {
             //允许播放
             if (!mediaPlayer.isPlaying()) {
                 //情况一：已有歌曲，但暂停中
@@ -173,11 +184,11 @@ public class BroadcastService extends BaseService implements Runnable {
                 //说明在播放中，内心毫无波动
                 thread.sleep(800);
             }
-        } else if (playState == PAUSE_MUSIC) {
+        } else if (playState == STATE_PAUSE_MUSIC) {
             //设置状态为暂停
             if (mediaPlayer.isPlaying())
                 pauseMusic();
-        } else if (playState == NONE_MUSIC) {
+        } else if (playState == STATE_NONE_MUSIC) {
             resetMusic();
         }
     }
@@ -193,16 +204,18 @@ public class BroadcastService extends BaseService implements Runnable {
         int operation = instruction.getIntExtra("OPERATION", -1);
         Intent intent;
         switch (operation) {
-            case BroadcastService.PLAY_MUSIC:
+            case BroadcastService.STATE_PLAY_MUSIC:
                 //发送信息的事，该方法内部做了
                 playMusic();
                 break;
 
-            case BroadcastService.PAUSE_MUSIC:
+            case BroadcastService.STATE_PAUSE_MUSIC:
                 pauseMusic();
                 break;
 
             case BroadcastService.NEXT_MUSIC:
+                if(broadcastList == null)
+                    break;
                 moveToNextPlayPosition();
                 playMusic(broadcastList.get(playPosition));
                 intent = new Intent("com.github.bysky.charmplayer.MUSIC_BROADCAST_STATE");
@@ -212,12 +225,22 @@ public class BroadcastService extends BaseService implements Runnable {
                 break;
 
             case BroadcastService.PREVIOUS_MUSIC:
+                if(broadcastList == null)
+                    break;
                 moveToPreviousPlayPosition();
                 playMusic(broadcastList.get(playPosition));
                 intent = new Intent("com.github.bysky.charmplayer.MUSIC_BROADCAST_STATE");
                 intent.putExtra("PLAY_STATE",playState);
                 intent.putExtra("TARGET_VIEW",NavBarActivity.BUTTON_PRE);
                 sendBroadcast(intent);
+                break;
+
+            case BroadcastService.SWITCH_MUSIC:
+                //当按下通知栏的转换按钮
+                if(playState == STATE_PLAY_MUSIC)
+                    pauseMusic();
+                else if(playState == STATE_PAUSE_MUSIC)
+                    playMusic();
                 break;
 
             case BroadcastService.CHANGE_PLAY_MODE:
@@ -251,6 +274,10 @@ public class BroadcastService extends BaseService implements Runnable {
                 }
                 sendBroadcast(intent);
                 break;
+
+            case EXIT:
+                ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).cancel(NOTI_CODE);
+                System.exit(0);
         }
         //用完的指令还有什么用，烧了(╯≥▽≤)╯~ ┴—┴
         instruction = null;
@@ -259,10 +286,18 @@ public class BroadcastService extends BaseService implements Runnable {
 
 
     private void playMusic() {
-        if (playState != PAUSE_MUSIC)
+        if (playState != STATE_PAUSE_MUSIC)
             return;
         mediaPlayer.start();
-        playState = PLAY_MUSIC;
+        playState = STATE_PLAY_MUSIC;
+        //更新通知视图
+        if(remoteViews != null){
+            remoteViews.setTextViewText(R.id.music_title, broadcastList.get(playPosition).getMusicName());
+            remoteViews.setTextViewText(R.id.music_artist, broadcastList.get(playPosition).getArtist());
+            remoteViews.setImageViewResource(R.id.img_button_play,R.drawable.ic_notification_play);
+            ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
+                    .notify(NOTIFICATION, NOTI_CODE, builder.setContent(remoteViews).build());
+        }
         //communication
         Intent intent = new Intent("com.github.bysky.charmplayer.MUSIC_BROADCAST_STATE");
         intent.putExtra("PLAY_STATE",playState);
@@ -277,7 +312,15 @@ public class BroadcastService extends BaseService implements Runnable {
         mediaPlayer.setDataSource(music.getFilePath());
         mediaPlayer.prepare();
         mediaPlayer.start();
-        playState = PLAY_MUSIC;
+        playState = STATE_PLAY_MUSIC;
+        //更新通知视图
+        if(remoteViews != null){
+            remoteViews.setTextViewText(R.id.music_title, broadcastList.get(playPosition).getMusicName());
+            remoteViews.setTextViewText(R.id.music_artist, broadcastList.get(playPosition).getArtist());
+            remoteViews.setImageViewResource(R.id.img_button_play,R.drawable.ic_notification_play);
+            ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
+                    .notify(NOTIFICATION, NOTI_CODE, builder.setContent(remoteViews).build());
+        }
         //communication
         Intent intent = new Intent("com.github.bysky.charmplayer.MUSIC_BROADCAST_STATE");
         intent.putExtra("PLAY_STATE",playState);
@@ -292,7 +335,15 @@ public class BroadcastService extends BaseService implements Runnable {
         if (!mediaPlayer.isPlaying())
             return;
         mediaPlayer.pause();
-        playState = PAUSE_MUSIC;
+        playState = STATE_PAUSE_MUSIC;
+        //更新通知视图
+        if(remoteViews != null){
+            remoteViews.setTextViewText(R.id.music_title, broadcastList.get(playPosition).getMusicName());
+            remoteViews.setTextViewText(R.id.music_artist, broadcastList.get(playPosition).getArtist());
+            remoteViews.setImageViewResource(R.id.img_button_play,R.drawable.ic_notification_pause);
+            ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
+                    .notify(NOTIFICATION, NOTI_CODE, builder.setContent(remoteViews).build());
+        }
         //communication
         Intent intent = new Intent("com.github.bysky.charmplayer.MUSIC_BROADCAST_STATE");
         intent.putExtra("PLAY_STATE",playState);
@@ -302,7 +353,15 @@ public class BroadcastService extends BaseService implements Runnable {
 
     private void resetMusic() {
         mediaPlayer.reset();
-        playState = NONE_MUSIC;
+        playState = STATE_NONE_MUSIC;
+        //更新通知视图
+        if(remoteViews != null){
+            remoteViews.setTextViewText(R.id.music_title, getResources().getString(R.string.default_music_title));
+            remoteViews.setTextViewText(R.id.music_artist, getResources().getString(R.string.default_music_art));
+            remoteViews.setImageViewResource(R.id.img_button_play,R.drawable.ic_notification_play);
+            ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
+                    .notify(NOTIFICATION, NOTI_CODE, builder.setContent(remoteViews).build());
+        }
         //communication
         Intent intent = new Intent("com.github.bysky.charmplayer.MUSIC_BROADCAST_STATE");
         intent.putExtra("PLAY_STATE",playState);
@@ -357,8 +416,7 @@ public class BroadcastService extends BaseService implements Runnable {
     public void onDestroy() {
         super.onDestroy();
         unregisterReceiver(receiver);
-        if(noti != null)
-            ((NotificationManager)getSystemService(NOTIFICATION_SERVICE)).cancel(noti.hashCode());
+        ((NotificationManager)getSystemService(NOTIFICATION_SERVICE)).cancel(NOTI_CODE);
     }
 
 }

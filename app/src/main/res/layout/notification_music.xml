@@ -32,11 +32,13 @@
         </LinearLayout>
 
         <ImageButton
+            android:id="@+id/img_button_exit"
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_marginTop="@dimen/small_border"
             android:layout_weight="0"
-            android:background="@drawable/ic_cancel" />
+            android:background="@drawable/selector_notification"
+            android:scaleType="fitCenter" />
     </LinearLayout>
 
     <TextView
@@ -50,7 +52,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:gravity="center_horizontal"
         android:orientation="horizontal">
 
         <ImageButton
@@ -58,21 +60,24 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/icon_size_mini"
             android:layout_weight="1"
-            android:background="@drawable/ic_notification_previous" />
+            android:background="@drawable/selector_notification"
+            android:scaleType="fitCenter" />
 
         <ImageButton
             android:id="@+id/img_button_play"
             android:layout_width="0dp"
             android:layout_height="@dimen/icon_size_mini"
             android:layout_weight="1"
-            android:background="@drawable/ic_notification_play" />
+            android:background="@drawable/selector_notification"
+            android:scaleType="fitCenter" />
 
         <ImageButton
             android:id="@+id/img_button_next"
             android:layout_width="0dp"
             android:layout_height="@dimen/icon_size_mini"
             android:layout_weight="1"
-            android:background="@drawable/ic_notification_next" />
+            android:background="@drawable/selector_notification"
+            android:scaleType="fitCenter" />
 
     </LinearLayout>
 

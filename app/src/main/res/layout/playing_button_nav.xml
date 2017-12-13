@@ -51,7 +51,7 @@
                 android:maxLines="1"
                 android:paddingStart="@dimen/mini_border"
                 android:paddingEnd="@dimen/mini_border"
-                android:text="@string/default_music_lrc"
+                android:text="@string/default_music_art"
                 android:textSize="14sp" />
         </LinearLayout>
 

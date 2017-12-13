@@ -13,7 +13,7 @@
 
     <string name="action_settings">Settings</string>
     <string name="default_music_title">魅听，听见好音乐</string>
-    <string name="default_music_lrc">在这里倾听世界的声音</string>
+    <string name="default_music_art">在这里倾听世界的声音</string>
 
     <string name="local_music">本地音乐</string>
     <string name="scan_music">扫描歌曲</string>
