@@ -17,7 +17,7 @@ import android.widget.Toast;
 public class MainActivity extends NavBarActivity
         implements NavigationView.OnNavigationItemSelectedListener,View.OnClickListener {
 
-    private AdjustDrawButton buttonLocalMusic,buttonScan,buttonFond,buttonMusicList;
+    private AdjustDrawButton buttonLocalMusic,buttonScan,buttonFond,buttonArtist;
     private NavigationView navView;
 
     @Override
@@ -44,12 +44,12 @@ public class MainActivity extends NavBarActivity
         navView.setNavigationItemSelectedListener(this);
         //
         buttonLocalMusic = findViewById(R.id.button_entrance_local_music);    buttonLocalMusic.setOnClickListener(this);
-        buttonMusicList = findViewById(R.id.button_entrance_music_list);       buttonMusicList.setOnClickListener(this);
+        buttonArtist = findViewById(R.id.button_entrance_artist);           buttonArtist.setOnClickListener(this);
         buttonScan = findViewById(R.id.button_entrance_scan);                  buttonScan.setOnClickListener(this);
         buttonFond = findViewById(R.id.button_entrance_i_fond);                buttonFond.setOnClickListener(this);
         //
         buttonLocalMusic.setBackgroundSize(1,iconWH,iconWH);
-        buttonMusicList.setBackgroundSize(1,iconWH,iconWH);
+        buttonArtist.setBackgroundSize(1,iconWH,iconWH);
         buttonFond.setBackgroundSize(1,iconWH,iconWH);
         buttonScan.setBackgroundSize(1,iconWH,iconWH);
     }
@@ -64,8 +64,9 @@ public class MainActivity extends NavBarActivity
                 intent = new Intent(this,LocalMusicActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.button_entrance_music_list:
-
+            case R.id.button_entrance_artist:
+                intent = new Intent(this, ArtistActivity.class);
+                startActivity(intent);
                 break;
             case R.id.button_entrance_i_fond:
 

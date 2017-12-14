@@ -1,6 +1,7 @@
 package com.github.bysky.charmplayer;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,7 +20,11 @@ public class LocalMusicActivity extends NavBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_local_music);
         Toolbar toolbar_local = findViewById(R.id.toolbar_local);
-        toolbar_local.setTitle(R.string.local_title);
+        //重写标题栏
+        if(getIntent().getStringExtra("ARTIST") == null)
+            toolbar_local.setTitle(R.string.local_title);
+        else
+            getSupportActionBar().setTitle(getIntent().getStringExtra("ARTIST"));
         setSupportActionBar(toolbar_local);
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -41,8 +46,15 @@ public class LocalMusicActivity extends NavBarActivity
         };
         //
         RecyclerView recyclerMusicList = findViewById(R.id.recycler_local_music);
-        LocalMusicAdapter adapter = new LocalMusicAdapter(this, getSavedMusicList(), listener);
+        Cursor dbList = null;
+        //如果传入了指定的歌手名，则只展出该歌手的歌曲
+        if(getIntent().getStringExtra("ARTIST") != null){
+            dbList = getSavedMusicList(getIntent().getStringExtra("ARTIST"));
+        }else
+            dbList = getSavedMusicList();
+        LocalMusicAdapter adapter = new LocalMusicAdapter(this, dbList, listener);
         LinearLayoutManager llm = new LinearLayoutManager(this, LinearLayout.VERTICAL, false);
+        llm.setSmoothScrollbarEnabled(true);
         recyclerMusicList.setLayoutManager(llm);
         recyclerMusicList.setAdapter(adapter);
         recyclerMusicList.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));

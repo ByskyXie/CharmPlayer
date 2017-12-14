@@ -11,31 +11,38 @@
         android:roundIcon="@drawable/icon_charm"
         android:supportsRtl="true"
         android:theme="@style/RedTheme">
+
         <activity
             android:name=".MainActivity"
-            android:launchMode="singleTask"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".LocalMusicActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        <activity android:name=".ScanMusicActivity"
+
+        <activity
+            android:name=".ScanMusicActivity"
             android:launchMode="singleTask">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+
         <activity android:name=".ScanFileForMusicActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ScanMusicActivity" />
         </activity>
+
         <activity android:name=".SelectFolderActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -51,6 +58,11 @@
             android:enabled="true"
             android:exported="true" />
 
+        <activity android:name=".ArtistActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
+        </activity>
     </application>
 
 </manifest>

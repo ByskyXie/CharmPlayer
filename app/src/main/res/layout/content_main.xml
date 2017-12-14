@@ -39,7 +39,7 @@
         android:layout_height="wrap_content">
 
         <com.github.bysky.charmplayer.AdjustDrawButton
-            android:id="@+id/button_entrance_music_list"
+            android:id="@+id/button_entrance_artist"
             style="@style/ButtonNoShadow_HaveBorder"
             android:layout_width="0dp"
             android:layout_height="match_parent"

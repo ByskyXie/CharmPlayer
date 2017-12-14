@@ -294,7 +294,7 @@ public class BroadcastService extends BaseService implements Runnable {
         if(remoteViews != null){
             remoteViews.setTextViewText(R.id.music_title, broadcastList.get(playPosition).getMusicName());
             remoteViews.setTextViewText(R.id.music_artist, broadcastList.get(playPosition).getArtist());
-            remoteViews.setImageViewResource(R.id.img_button_play,R.drawable.ic_notification_play);
+            remoteViews.setImageViewResource(R.id.img_button_play,R.drawable.ic_notification_pause);
             ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
                     .notify(NOTIFICATION, NOTI_CODE, builder.setContent(remoteViews).build());
         }
@@ -317,7 +317,7 @@ public class BroadcastService extends BaseService implements Runnable {
         if(remoteViews != null){
             remoteViews.setTextViewText(R.id.music_title, broadcastList.get(playPosition).getMusicName());
             remoteViews.setTextViewText(R.id.music_artist, broadcastList.get(playPosition).getArtist());
-            remoteViews.setImageViewResource(R.id.img_button_play,R.drawable.ic_notification_play);
+            remoteViews.setImageViewResource(R.id.img_button_play,R.drawable.ic_notification_pause);
             ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
                     .notify(NOTIFICATION, NOTI_CODE, builder.setContent(remoteViews).build());
         }
@@ -340,7 +340,7 @@ public class BroadcastService extends BaseService implements Runnable {
         if(remoteViews != null){
             remoteViews.setTextViewText(R.id.music_title, broadcastList.get(playPosition).getMusicName());
             remoteViews.setTextViewText(R.id.music_artist, broadcastList.get(playPosition).getArtist());
-            remoteViews.setImageViewResource(R.id.img_button_play,R.drawable.ic_notification_pause);
+            remoteViews.setImageViewResource(R.id.img_button_play,R.drawable.ic_notification_play);
             ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
                     .notify(NOTIFICATION, NOTI_CODE, builder.setContent(remoteViews).build());
         }
