@@ -12,6 +12,8 @@
     <color name="primaryText_red">#000000</color>
     <color name="secondaryText_red">#757575</color>
     <color name="dividerColor_red">#BDBDBD</color>
+    <color name="hint_color">#FFFACD</color>
+    <color name="hint_color_dark">#efebc9</color>
 
     <color name="white">#FFFFFF</color>
     <color name="lightGray">#EAEAEA</color>

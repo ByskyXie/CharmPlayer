@@ -2,6 +2,7 @@ package com.github.bysky.charmplayer;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -86,11 +88,23 @@ public class LocalMusicAdapter extends RecyclerView.Adapter<LocalMusicAdapter.Lo
         }
         //TODO:怎么实现同步进行？还有再次点击暂停
 //        changeChildViewState(holder);
-        //监听器
+        //各监听器
         holder.layoutPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onClick(LocalMusicAdapter.this, holder);
+            }
+        });
+        holder.imgAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent("com.github.bysky.charmplayer.MUSIC_BROADCAST_INSTRUCTION");
+                intent.putExtra("OPERATION",BroadcastService.ADD_LIST_ITEM);
+                Music tmusic = musicList.get(holder.getAdapterPosition());
+                intent.putExtra("MUSIC",tmusic);
+                Toast.makeText(context,tmusic.getArtist()+" - "+tmusic.getMusicName()+"\n已加入播放队列"
+                        ,Toast.LENGTH_SHORT).show();
+                context.sendBroadcast(intent);
             }
         });
         //设置icon长宽

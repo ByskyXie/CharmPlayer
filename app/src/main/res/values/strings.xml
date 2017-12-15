@@ -27,8 +27,14 @@
     <string name="select_file_confirm">开始扫描</string>
     <string name="deep_option">未找到你想要的歌曲？\n试试深度扫描</string>
 
-
     <string name="local_title">本地音乐</string>
     <string name="stop">停止</string>
     <string name="edit_list">编辑</string>
+    <string name="play_full_list">播放所有歌曲</string>
+
+    <string name="music_option_play_later">下一首播放</string>
+    <string name="music_option_fond">我喜欢</string>
+    <string name="music_option_keep">添加到歌单</string>
+    <string name="music_option_infor">歌曲信息</string>
+    <string name="music_option_delete">删除</string>
 </resources>

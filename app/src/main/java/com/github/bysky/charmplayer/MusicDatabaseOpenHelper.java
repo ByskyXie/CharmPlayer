@@ -10,7 +10,23 @@ import android.util.Log;
  */
 
 public class MusicDatabaseOpenHelper extends SQLiteOpenHelper {
-    private static final String CREATE_DB_COMMAND = "CREATE TABLE MUSIC(" +
+    private static final String CREATE_MUSIC_COMMAND =
+            "CREATE TABLE MUSIC(" +
+            "FILE_PATH TEXT PRIMARY KEY," +
+            "FILE_NAME TEXT NOT NULL," +
+            "FILE_FOLDER TEXT NOT NULL," +
+            "MUSIC_NAME TEXT," +
+            "ARTIST TEXT"+
+            ");";
+    private static final String CREATE_FOND_COMMAND =
+            "CREATE TABLE FOND(" +
+            "FILE_PATH TEXT PRIMARY KEY," +
+            "FILE_NAME TEXT NOT NULL," +
+            "FILE_FOLDER TEXT NOT NULL," +
+            "MUSIC_NAME TEXT," +
+            "ARTIST TEXT"+
+            ");";
+    protected static final String TEMPLETE_MUSIC_LIST =
             "FILE_PATH TEXT PRIMARY KEY," +
             "FILE_NAME TEXT NOT NULL," +
             "FILE_FOLDER TEXT NOT NULL," +
@@ -26,7 +42,8 @@ public class MusicDatabaseOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-            db.execSQL(CREATE_DB_COMMAND);
+            db.execSQL(CREATE_MUSIC_COMMAND);
+            db.execSQL(CREATE_FOND_COMMAND);
             Log.w("MusicDatabaseOpenHelper","Execute create table ");
     }
 

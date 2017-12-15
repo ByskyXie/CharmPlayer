@@ -18,9 +18,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static android.app.Notification.FLAG_FOREGROUND_SERVICE;
-import static android.app.Notification.FLAG_ONGOING_EVENT;
-
 public class BroadcastService extends BaseService implements Runnable {
 
     final static int STATE_NONE_MUSIC = 0;
@@ -257,7 +254,13 @@ public class BroadcastService extends BaseService implements Runnable {
                 break;
 
             case ADD_LIST_ITEM:
-
+                if(instruction.getSerializableExtra("MUSIC") != null){
+                    if(broadcastList == null)
+                        broadcastList = new ArrayList<Music>();
+                    broadcastList.add((Music)instruction.getSerializableExtra("MUSIC"));
+                    if(playState == STATE_NONE_MUSIC)   //未播放歌曲
+                        playMusic(broadcastList.get(playPosition));
+                }
                 break;
             case CLEAR_BROADCAST_LIST:
 
@@ -354,6 +357,7 @@ public class BroadcastService extends BaseService implements Runnable {
     private void resetMusic() {
         mediaPlayer.reset();
         playState = STATE_NONE_MUSIC;
+        playPosition = 0;
         //更新通知视图
         if(remoteViews != null){
             remoteViews.setTextViewText(R.id.music_title, getResources().getString(R.string.default_music_title));

@@ -20,7 +20,7 @@
     <TextView
         android:maxLines="3"
         android:id="@+id/text_view_show_path"
-        android:background="#FFFACD"
+        android:background="@drawable/shape_textview_hint"
         android:padding="@dimen/small_border"
         android:textSize="15sp"
         android:layout_width="match_parent"

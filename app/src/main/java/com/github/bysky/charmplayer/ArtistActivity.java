@@ -20,6 +20,7 @@ public class ArtistActivity extends NavBarActivity {
         LinearLayoutManager llm = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         llm.setSmoothScrollbarEnabled(true);
         ArtistAdapter adapter = new ArtistAdapter(this,getArtistList());
+        recyclerView.setVerticalScrollBarEnabled(true); //滚动条
         recyclerView.setLayoutManager(llm);
         recyclerView.setAdapter(adapter);
     }

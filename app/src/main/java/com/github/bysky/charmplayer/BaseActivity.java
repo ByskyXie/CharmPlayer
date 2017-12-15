@@ -73,6 +73,11 @@ public class BaseActivity extends AppCompatActivity{
                 ,null, null,"ARTIST",null,"ARTIST ASC");
     }
 
+    protected Cursor getFondList(){
+        return musicSQLiteDatabases.query("FOND",new String[]{"FILE_PATH","FILE_NAME","FILE_FOLDER","MUSIC_NAME","ARTIST"}
+                ,null, null,null,null,"FILE_PATH DESC");
+    }
+
     protected void initialUI(){}
 
     protected void setButtonUnable(Button button){

@@ -69,7 +69,8 @@ public class MainActivity extends NavBarActivity
                 startActivity(intent);
                 break;
             case R.id.button_entrance_i_fond:
-
+                intent = new Intent(this,FondMusicActivity.class);
+                startActivity(intent);
                 break;
             case R.id.button_entrance_scan:
                 intent = new Intent(this,ScanMusicActivity.class);

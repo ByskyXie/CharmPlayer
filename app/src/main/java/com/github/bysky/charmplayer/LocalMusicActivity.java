@@ -20,12 +20,12 @@ public class LocalMusicActivity extends NavBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_local_music);
         Toolbar toolbar_local = findViewById(R.id.toolbar_local);
+        setSupportActionBar(toolbar_local);
         //重写标题栏
         if(getIntent().getStringExtra("ARTIST") == null)
-            toolbar_local.setTitle(R.string.local_title);
+            getSupportActionBar().setTitle(R.string.local_title);
         else
             getSupportActionBar().setTitle(getIntent().getStringExtra("ARTIST"));
-        setSupportActionBar(toolbar_local);
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initialUI();
@@ -55,6 +55,7 @@ public class LocalMusicActivity extends NavBarActivity
         LocalMusicAdapter adapter = new LocalMusicAdapter(this, dbList, listener);
         LinearLayoutManager llm = new LinearLayoutManager(this, LinearLayout.VERTICAL, false);
         llm.setSmoothScrollbarEnabled(true);
+        recyclerMusicList.setVerticalScrollBarEnabled(true); //滚动条
         recyclerMusicList.setLayoutManager(llm);
         recyclerMusicList.setAdapter(adapter);
         recyclerMusicList.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
