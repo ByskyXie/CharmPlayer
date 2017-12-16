@@ -7,6 +7,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -14,6 +15,8 @@ import android.widget.ProgressBar;
 
 public class LocalMusicActivity extends NavBarActivity
         implements View.OnClickListener {
+
+    private RecyclerView recyclerMusicList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +48,7 @@ public class LocalMusicActivity extends NavBarActivity
             }
         };
         //
-        RecyclerView recyclerMusicList = findViewById(R.id.recycler_local_music);
+        recyclerMusicList = findViewById(R.id.recycler_local_music);
         Cursor dbList = null;
         //如果传入了指定的歌手名，则只展出该歌手的歌曲
         if(getIntent().getStringExtra("ARTIST") != null){
@@ -65,6 +68,23 @@ public class LocalMusicActivity extends NavBarActivity
     public void onClick(View v) {
         //交给上层处理
         super.onClick(v);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+//        int downX = 0,downY = 0;
+//        long time = System.currentTimeMillis();
+//        switch (event.getAction()){
+//            case MotionEvent.ACTION_DOWN:
+//                downY = recyclerMusicList.getScrollY();
+//                downX = recyclerMusicList.getScrollX();
+//                break;
+//            case MotionEvent.ACTION_MOVE:
+//                recyclerMusicList.setScrollY((int)(event.getY()-downY));
+//                recyclerMusicList.setScrollX((int)(event.getX()-downX));
+//                break;
+//        }
+        return super.onTouchEvent(event);
     }
 
 }

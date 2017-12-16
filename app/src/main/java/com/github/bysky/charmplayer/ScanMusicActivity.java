@@ -1,8 +1,13 @@
 package com.github.bysky.charmplayer;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -11,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -32,6 +38,13 @@ public class ScanMusicActivity extends BaseActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //初始化控件
         initialUI();
+        //检查权限
+        if(ContextCompat.checkSelfPermission(ScanMusicActivity.this,
+                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            //申请权限
+            ActivityCompat.requestPermissions(ScanMusicActivity.this
+                    ,new String[]{ Manifest.permission.READ_EXTERNAL_STORAGE},9527);
+        }
     }
 
     @Override
@@ -46,6 +59,22 @@ public class ScanMusicActivity extends BaseActivity
         button_scan_diy = (Button)findViewById(R.id.button_scan_diy);   button_scan_diy.setOnClickListener(this);
         button_scan_diy.getLayoutParams().width =  width;
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case 9527:
+                if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_DENIED){
+                    //不同意，还怎么玩，回家
+                    setButtonUnable(button_scan_all);
+                    setButtonUnable(button_scan_diy);
+                    Toast.makeText(ScanMusicActivity.this,"无权限访问存储卡",Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+    }
+
     @Override
     public void onClick(View v) {
         Intent intent;

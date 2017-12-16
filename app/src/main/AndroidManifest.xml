@@ -44,11 +44,14 @@
                 android:value=".ScanMusicActivity" />
         </activity>
 
+        <!-- 这里的权限声明.. -->
         <service
+            android:permission="android.permission.READ_EXTERNAL_STORAGE"
             android:name=".ScanFileService"
             android:enabled="true"
             android:exported="false" />
         <service
+            android:permission="android.permission.READ_EXTERNAL_STORAGE"
             android:name=".BroadcastService"
             android:enabled="true"
             android:exported="true" />

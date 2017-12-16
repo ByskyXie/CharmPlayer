@@ -149,7 +149,8 @@ public class BroadcastService extends BaseService implements Runnable {
         if (broadcastList == null || broadcastList.isEmpty()) {
             thread.sleep(800);
             return;
-        }
+        }else   //尽量减少资源浪费，高桥名人也按不到这么快（60ms ）的连续技
+            thread.sleep(60);
         if (playState == STATE_PLAY_MUSIC) {
             //允许播放
             if (!mediaPlayer.isPlaying()) {

@@ -75,7 +75,7 @@ public class BaseActivity extends AppCompatActivity{
 
     protected Cursor getFondList(){
         return musicSQLiteDatabases.query("FOND",new String[]{"FILE_PATH","FILE_NAME","FILE_FOLDER","MUSIC_NAME","ARTIST"}
-                ,null, null,null,null,"FILE_PATH DESC");
+                ,null, null,null,null,null);
     }
 
     protected void initialUI(){}
