@@ -21,14 +21,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="魅听"
-                android:textColor="@color/white"
+                android:textColor="#cccccc"
                 android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/music_artist"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="听见世界的声音" />
+                android:text="听见世界的声音"
+                android:textColor="#cccccc" />
         </LinearLayout>
 
         <ImageButton
@@ -46,7 +47,7 @@
         android:layout_height="0.5dp"
         android:layout_marginBottom="@dimen/mini_border"
         android:layout_marginTop="@dimen/mini_border"
-        android:background="@color/level_1_Transparent" />
+        android:background="#80555555" />
 
     <!-- 显示控制键 -->
     <LinearLayout

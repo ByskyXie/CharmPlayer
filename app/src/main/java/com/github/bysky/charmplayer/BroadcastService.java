@@ -282,6 +282,7 @@ public class BroadcastService extends BaseService implements Runnable {
             case EXIT:
                 ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).cancel(NOTI_CODE);
                 System.exit(0);
+                break;
         }
         //用完的指令还有什么用，烧了(╯≥▽≤)╯~ ┴—┴
         instruction = null;
