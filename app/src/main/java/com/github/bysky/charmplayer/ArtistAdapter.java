@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 /**
  * Created by asus on 2017/12/13.
  */
@@ -21,12 +23,14 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistHold
 
     class ArtistHolder extends RecyclerView.ViewHolder{
         private TextView textViewAritst;
+        private TextView textViewCount;
         private View root;
         private ImageView imgView;
         ArtistHolder(View itemView) {
             super(itemView);
             imgView= itemView.findViewById(R.id.image_view_item_artist);
             textViewAritst = itemView.findViewById(R.id.text_view_item_artist);
+            textViewCount = itemView.findViewById(R.id.text_view_item_count);
             root = itemView;
         }
     }
@@ -50,6 +54,7 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistHold
             Log.e("ArtistAdapter","Failed to get Cursor'Artist' position.\n");
         holder.textViewAritst.setText(artist
                 .getString(artist.getColumnIndex("ARTIST")));
+        holder.textViewCount.setText("共"+ artist.getInt(artist.getColumnIndex("NUM")) +"项");
         //调整大小
         ViewGroup.LayoutParams params = holder.imgView.getLayoutParams();
         params.height = params.width = context.getResources().getDisplayMetrics().widthPixels/7;
@@ -63,6 +68,7 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistHold
             }
         });
     }
+
 
     @Override
     public int getItemCount() {

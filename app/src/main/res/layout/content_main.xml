@@ -85,6 +85,69 @@
             android:drawableRight="@drawable/ic_setting_light" />
     </LinearLayout>
 
+    <LinearLayout
+        android:background="@drawable/shape_button_have_border_light"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:background="@color/lightGray"
+            android:layout_margin="@dimen/mini_border"
+            android:scaleType="fitCenter"
+            android:padding="@dimen/mini_border"
+            android:src="@mipmap/mipmap_album_medium"
+            android:layout_width="60dp"
+            android:layout_height="60dp" />
+        <TextView
+            android:layout_marginStart="@dimen/small_border"
+            android:layout_gravity="center_vertical"
+            android:text="回到过去"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:background="@drawable/shape_button_have_border_light"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:background="@color/lightGray"
+            android:layout_margin="@dimen/mini_border"
+            android:scaleType="fitCenter"
+            android:padding="@dimen/mini_border"
+            android:src="@mipmap/mipmap_album_medium"
+            android:layout_width="60dp"
+            android:layout_height="60dp" />
+        <TextView
+            android:layout_marginStart="@dimen/small_border"
+            android:layout_gravity="center_vertical"
+            android:text="轻音乐（bandari）"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:background="@drawable/shape_button_have_border_light"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:background="@color/lightGray"
+            android:layout_margin="@dimen/mini_border"
+            android:scaleType="fitCenter"
+            android:padding="@dimen/mini_border"
+            android:src="@mipmap/mipmap_album_medium"
+            android:layout_width="60dp"
+            android:layout_height="60dp" />
+        <TextView
+            android:layout_marginStart="@dimen/small_border"
+            android:layout_gravity="center_vertical"
+            android:text="码代码专用BGM"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_music_list"
         android:layout_width="match_parent"

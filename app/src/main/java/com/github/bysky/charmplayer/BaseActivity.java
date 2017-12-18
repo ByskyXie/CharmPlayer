@@ -69,7 +69,7 @@ public class BaseActivity extends AppCompatActivity{
     }
 
     protected Cursor getArtistList(){
-        return musicSQLiteDatabases.query("MUSIC",new String[]{"ARTIST"}
+        return musicSQLiteDatabases.query("MUSIC",new String[]{"ARTIST","COUNT(ARTIST) NUM"}
                 ,null, null,"ARTIST",null,"ARTIST ASC");
     }
 
