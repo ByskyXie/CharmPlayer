@@ -15,7 +15,6 @@
         android:scaleType="fitCenter"
         app:srcCompat="@drawable/ic_item_artist" />
 
-
     <TextView
         android:id="@+id/text_view_item_artist"
         android:layout_width="0dp"
