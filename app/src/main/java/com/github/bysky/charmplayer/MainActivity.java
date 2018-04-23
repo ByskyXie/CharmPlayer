@@ -117,6 +117,8 @@ public class MainActivity extends NavBarActivity
         // Handle navigation view item clicks here.
         //去除选择
         navView.setCheckedItem(NavigationView.NO_ID);
+
+//        navView.setCheckedItem(NavigationView.GONE); //这样有用吗？
         int id = item.getItemId();
 
         if (id == R.id.nav_skin) {

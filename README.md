@@ -8,11 +8,7 @@
 
 ## ‘§¿¿
 
-<img src="/img/index.jpg" width="200" height="355"/>
-<img src="/img/scan.jpg" width="200" height="355"/>
-<img src="/img/list.jpg" width="200" height="355"/>
-<img src="/img/noti.jpg" width="200" height="355"/>
-
+<img src="/img/index.jpg" width="200" height="355"/><img src="/img/scan.jpg" width="200" height="355"/><img src="/img/list.jpg" width="200" height="355"/><img src="/img/noti.jpg" width="200" height="355"/>
 
 ## LICENSE
 
