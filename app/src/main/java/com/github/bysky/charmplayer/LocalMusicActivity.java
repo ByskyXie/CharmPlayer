@@ -58,7 +58,6 @@ public class LocalMusicActivity extends NavBarActivity
         LocalMusicAdapter adapter = new LocalMusicAdapter(this, dbList, listener);
         LinearLayoutManager llm = new LinearLayoutManager(this, LinearLayout.VERTICAL, false);
         llm.setSmoothScrollbarEnabled(true);
-        recyclerMusicList.setVerticalScrollBarEnabled(true); //滚动条
         recyclerMusicList.setLayoutManager(llm);
         recyclerMusicList.setAdapter(adapter);
         recyclerMusicList.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
